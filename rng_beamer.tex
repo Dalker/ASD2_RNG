@@ -58,6 +58,7 @@
   \item $\sum_xf(x)=1$
   \end{itemize}
   \begin{tabular}{ccc}
+    \onslide<2->{
     \begin{tikzpicture}[scale=.5, every node/.style={scale=0.5}]
       \draw[->] (-.2,0) -- (5.5,0) node[right] {$x$};
       \draw[->] (0, -0.2) -- (0, 4.2) node[above] {$f(x)$};
@@ -66,8 +67,8 @@
         \node at (\i, -0.3) {$\i$};
       }
       \draw (.1, 3.5) -- (-.1, 3.5) node[left] {$0.2$};
-    \end{tikzpicture}
-    &
+    \end{tikzpicture}}
+    &\onslide<3->{
       \begin{tikzpicture}[scale=.5, every node/.style={scale=0.5}]
         \draw[->] (-1.2,0) -- (5.2,0) node[right] {$x$};
         \draw[->] (-1,-0.2) -- (-1,6.2) node[above] {$f(x)$};
@@ -79,15 +80,15 @@
         \foreach \i in {0, ..., 5} {
           \node[below] at (\i, 0) {$\i$};
         }
-      \end{tikzpicture}  
-    &
+      \end{tikzpicture}}
+    &\onslide<4->{
       \begin{tikzpicture}[scale=.5, every node/.style={scale=0.5}]
         \draw[->] (-1.2,0) -- (4.2,0) node[right] {$x$};
         \draw[->] (-1,-0.2) -- (-1,4.2) node[above] {$f(x)$};
         \node[blue] at (1.5, 2) {\Huge ?};
-      \end{tikzpicture}  
+      \end{tikzpicture}}
     \\
-    uniforme & binômiale & autre
+    \onslide<2->{uniforme} & \onslide<3->{binômiale} & \onslide<4->{autre}
   \end{tabular}    
 \end{frame}
 \begin{frame}
@@ -95,7 +96,7 @@
   \begin{itemize}
   \item $\int_a^bf(x)$ est la probabilité de tirer $x$ entre $a$ et $b$.
   %\item $f(x)\geq0, \;\forall x$
-  \item $\disp\int_{-\infty}^{+\infty}f(x)=1$
+  \item $\int_{-\infty}^{+\infty}f(x)=1$
   \end{itemize}
   \begin{tikzpicture}
     \draw[->] (-.2,0) -- (4.2,0) node[right] {$x$};
@@ -104,6 +105,7 @@
     \draw (1, .1) -- (1, -.1) node[below] {\small$c$};
     \draw (3, .1) -- (3, -.1) node[below] {\small$d$};
     \node at (2, 2.2) {uniforme};
+    \onslide<2->{
     \def\dx{6.8}; \def\dy{-3};
     \draw[->] (-4.2+\dx, \dy) -- (4.2+\dx,\dy) node[right] {$x$};
     \draw[->] (\dx-1,\dy-.2) -- (\dx-1, 2.2+\dy) node[above] {$f(x)$};
@@ -113,16 +115,40 @@
     \draw (\dx+\ec, .1+\dy) -- (\dx+\ec, \dy-.1) node[below] {\small$\mu+\sigma$};
     \draw (\dx-\ec, .1+\dy) -- (\dx-\ec, \dy-.1) node[below] {\small$\mu-\sigma$};
     \node at (\dx+1, \dy+2.3) {normale};
+    }\onslide<3->{
     \def\dx{8}; \def\dy{.5};
     \draw[->] (\dx-.2, \dy) -- (\dx+3.2,\dy) node[right] {$x$};
     \draw[->] (\dx-.1,\dy-.2) -- (\dx-.1, \dy+2.2) node[above] {$f(x)$};
     \node[blue] at (\dx+1.5, \dy+1) {\Huge ?};
     \node at (\dx+1.5, \dy+2.2) {autre};
+    }
   \end{tikzpicture}
 \end{frame}
 
 \section{``vrai'' ou ``pseudo''-aléatoire?}
 \begin{frame}
   \frametitle{``vrai'' ou ``pseudo''-aléatoire?}
+  \ldots Telle est la question!
+\end{frame}
+
+\section{Générateurs de suites pseudo-aléatoires}
+\begin{frame}
+  \frametitle{Générateurs de suites pseudo-aléatoires}
+\end{frame}
+
+\section{Comment produire un ``seed''?}
+\begin{frame}
+  \frametitle{Comment produire un ``seed''?}
+\end{frame}
+
+\section{Que fait le module ``random'' de Python?}
+\begin{frame}
+  \frametitle{Que fait le module ``random'' de Python?}
+\end{frame}
+
+\section{Générateurs de suites ``vraiment'' aléatoires}
+\begin{frame}
+  \frametitle{Générateurs de suites ``vraiment'' aléatoires}
+  \ldots quantique \ldots
 \end{frame}
 \end{document}
