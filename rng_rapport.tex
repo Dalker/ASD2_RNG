@@ -1,6 +1,8 @@
 \documentclass{scrartcl}
 
 % importations de packages utiles
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+\addbibresource{rng.bib}
 \usepackage[utf8]{inputenc}  % pouvoir écrire avec des accents
 \usepackage[french]{babel}  % francophopnie
 \usepackage{hyperref}  % liens clicables dans pdf final
@@ -48,7 +50,7 @@
 
 \section{Générateurs de suites pseudo-aléatoires}
 \subsection{Historique}
-von Neumann (bla)
+von Neumann\cite{VonNeumann} (bla)
 
 \subsection{Caractéristiques communes}
 \begin{itemize}
@@ -76,4 +78,7 @@ résultats de petits tests
 
 \section{Conclusion}
 bla bla
+
+\addcontentsline{toc}{section}{Références}
+\printbibliography
 \end{document}
