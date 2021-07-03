@@ -1,0 +1,55 @@
+#+TITLE: PseudoRandom Number Generators
+#+AUTHOR: Dalker (daniel.kessler@dalker.org)
+* PRNG => déterministe
+  - pseudo-random number generator = PRNG = DRBG = deterministic random bit generator
+    -> algorithme pour générer séquence de nombres dont les propriétés se
+       rapprochent de celles d'une séquence aléatoire
+  - la séquence est déterminée par sa valeur initiale, appelée *seed*, qui peut
+    être réellement aléatoire
+  - on peut obtenir des "vrais" nombres aléatoires via des générateurs hardware,
+    mais les pseudo-aléatoires sont rapides et reproductibles, ce qui sont des
+    avantages
+* Généralités    
+  - utilité: simulations (monte-carlo), jeus, cryptographie (plus exigeante), etc.
+  - but: avoir des bonnes propriétés statistiques
+  - il existe beaucoup de PRNGs défaillants (périodes trop courtes,
+    corrélations, ne suit pas la distribution quand beaucoup de nombres sont
+    générés, etc.), y compris dans la librairie standard Java, par exemple
+    (selon Wikipedia elle utilise un LCG - linear congruential generator - de
+    basse qualité)
+  - le *Mersenne Twister* de 1998 est considéré un bon PRNG (peut-être le
+    premier à éviter des soucis des LCG)
+* PRNGs basés sur récurrences linéaires
+  - linear congruential generators (LCG): utilisés pendant la 2è moitié du XXè,
+    ont des soucis
+  - récurrences linéaires sur 2 éléments
+    -> *Mersenne Twister* (1997), avec une période de 2^{19937} - 1 itérations,
+       équidistribué jusqu'à 623 dimensions (?) et très rapide, un peu amélioré
+       en WELL (2006)
+    -> générateurs *xorshift* de George Marsaglia (2003), basés aussi sur
+       récurrences linéaires, très rapides
+* CSPRNG - Cryptographically Secure PRNGs
+  - exigences supplémentaires sur les tests statistiques devant être satisfaits
+  -> algorithme de Yarrow
+  -> fonction pseudo-aléatoire de Naor-Reingold
+  -> algorithme Blum-Blum-Shub
+* Historique des PRNG
+  - 1946 Von Neumann "middle-square method" - intérêt historique mais pas très
+    efficace
+  - 1958 Thomson & Rotenberg - Linear Congruential Generator (LCG) - le type de
+    générateur le plus utilisé
+  - 1965 Linear Feedback Shift Register (LFSR) - le 2ème type de générateur très
+    utilisé
+  - ...
+  - 1998 Matsumoto & Nishimura - Mersenne Twister - LCG proche des LFSR, Le PRNG
+    le plus utilisé
+  - 2003 Marsaglia - Xorshift - sous-type de LFSR très rapide, très utilisé depuis
+* PRNG dans Python et TRNG des OS (utile pour seeds et pour "secure random")
+  - le module random utilise un Mersenne Twister par défaut et indique que c'est
+    ok pour des simulations mais pas pour de la crypto, où on veut un "True RNG"
+  - SystemRandom de random, considéré plus "sûr", et le module secrets utilisent
+    de manière sous-jacente un accès au rng fourni par l'OS, à savvoir
+    /dev/random dans Linux ou similaires et CryptGenRandom dans windows; tous
+    les deux utilisent de l'"entropie" générée en combinant des valeurs
+    "aléatoires réelles" mesurées sur le système (pour Linux: voir l'algorithme
+    HAVEGE), algorithme Forguna dans MacOS
