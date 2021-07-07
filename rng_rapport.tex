@@ -45,28 +45,104 @@
 \item utilité directe (ex: jeus) et indirecte (ex: algos aléatoires)
 \end{itemize}
 
-\subsection{TRNG vs PRNG}
-\ldots
+\subsection{Questions fondamentales et distinction entre TRNG et PRNG}
+Dans un article de 1955 \cite{VonNeumann}, Von Neumann pose les deux questions
+fondamentales concernant la génération de nombres aléatoires:
+\begin{enumerate}
+\item Comment peut-on produire une séquence de chiffres aléatoires? (il est
+  question de chiffres décimaux entre 0 et 9, mais la question est la même pour
+  des bits 0 ou 1)
+\item Comment peut-on produire des nombres réels répartis suivant une loi de
+  distribution donnée?
+\end{enumerate}
+Pour la deuxième question, la réponse existe déjà à ce moment-là: en partant
+d'une distribution uniforme entre 0 et 1 (obtenue par exemple à partir d'une
+suite de bits aléatoires $(0.b_1b_2b_3\ldots)_{bin}$), en utilisant la fonction
+inverse de la distribution cumulée, ont peut reproduire n'importe quelle
+distribution continue. En effet, pour une distribution $f:I\rightarrow[0,1]$
+donnée, où $I$ est un intervalle où $f$ est strictement positive, la
+distribution cumulée correspondante $c:x\mapsto\int_{-\infty}^xf(\xi)d\xi$ est
+bijective de $I$ vers l'intervalle $[0,1]$. Son inverse $c^{(-1)}$ permettra
+donc de retrouver des valeurs de $x$ distribuées selon $f$. Des méthodes plus
+efficaces existent pour des distributions particulières.\par\medskip
 
-\section{Générateurs de suites pseudo-aléatoires}
-\subsection{Historique}
-von Neumann\cite{VonNeumann} (bla)
+Pour la première question, deux approches sont possibles: partir d'un processus
+physique, ou bien utiliser une méthode arithmétique. Von Neumann considère que
+le hasard idéal sera trouvé dans des phénomènes nucléaires, dont on peut compter
+la parité en un laps de temps donné (par exemple: pair:0, impair:1), mais
+d'autres moyens plus abordables existent, comme nous le verrons dans la section
+\ref{s:TRNG}.
+
+Selon Von Neumann, ``\textit{anyone who considers arithmetical methods of
+  producing random digits is, of course, in a state of sin}''.  Cependant, même
+s'il était praticable d'utiliser toujours une méthode ``physique'', les méthodes
+arithmétiques ont le grand avantage d'être reproductibles: ``\textit{the real
+  objection to this procedure is the practical need for checking
+  computations}''.
+\par\medskip
+
+De nos jours, la considération de reproductibilité de suites aléatoires pour
+tester des algorithmes et méthodes numériques comportant une composante
+aléatoire demeure tout autant vraie. A contrario, lorsque des nombres aléatoires
+sont employés pour la cryptographie, on veut éviter le plus possible la
+reproductibilité. Dans ce dernier cas, on préfère autant que possible recourir
+exclusivement à la génération de ``vrais'' nombres aléatoires (True Random
+Number Generators, section \ref{s:TRNG}). Cependant, ceux-ci sont coûteux en
+temps. C'est pourquoi dans tous les autres cas, on utilisera des méthodes
+arithmétiques pseudo-aléatoires (Pseudo-Random Number Generators) produisant de
+manière déterministe une suite de nombres uniformément distribués (section
+\ref{s:PRNG}).
+\par\medskip
+
+Finalement, Von Neumann nous met en garde sur le fait que dans les méthodes
+arithmétiques grossières qui étaient employées aux années 1950, une bonne part
+du ``pseudo-hasard'' provenait en réalité des erreurs d'arrondi, qui sont en
+l'occurrence très difficiles à étudier et donc diminuent la prédictibilité de la
+distribution des nombres produits. Des méthodes plus modernes devraient éviter
+cet écueil.
+
+
+\section{Générateurs de suites pseudo-aléatoires}\label{s:PRNG}
 
 \subsection{Caractéristiques communes}
-\begin{itemize}
-\item période (bla)
-\item seed (bla)
-\end{itemize}
+\subsubsection{la \textit{seed}}
+Les suites de nombres pseudo-aléatoires fournissent une manière déterministe de
+passer d'un nombre à un autre, sans histoire (seul le nombre précédent est pris
+en compte). Cependant, il faut démarrer la suite avec un premier nombre: la
+\textit{seed}. Celle-ci pourra être obtenue par une méthode de ``vrai'' hasard
+(cf. section \ref{s:TRNG}) ou bien être imposée de manière à pouvoir reporduire
+une séquence pseudo-aléatoire donnée, par exemple à des fins de tests.
+\subsubsection{la période}
+Toutes les séquences pseudo-aléatoires sont en fait périodiques. Si par exemple
+on produit des nombres constitués de 32 bits, au maximum au bout de $2^{32}$
+itérations on retombera sur la ``seed'' choisie au départ. Dans l'idéal, on ne
+voudrait pas y retomber avant. Une bonne méthode de génération de nombres
+pseudo-aléatoires devra donc garantis une période longue.
 
 \subsection{Générateurs linéaires congruents (LCG)}
-\ldots
+\ldots (à remplir par JF)
 
 \subsection{Mersenne Twister et les LFSR}
-\ldots
+La méthode la plus employée de nos jours est en fait le \textbf{Mersenne
+  Twister} \cite{MT}. Une de ses particularités est de garder en mémoire à
+chaque étape non pas 1 mais 624 nombres de 32 bits. Chaque itération est un
+\textit{twist} de ces 624 nombres, dont les variations permettent d'atteindre
+une période de $2^{19937}-1$ (qui est un nombre de Mersenne, d'où le nom du
+procédé). Si on n'utilise que le premier des 624 nombres à chaque itération, on
+verra que le nombre considéré peut être parfois répété (mais l'état global des
+624 nombres aura changé).
+
+L'algorithme du Mersenne Twister est assez compliqué et hors de la portée de ce
+travail. Notons cependant qu'il se base sur les  \textbf{Linear-Feedback Shift
+  Register}, une classe d'algorithmes dont un autre représentant, le
+\textbf{xorshift}, est aussi employé pour la génération de nombres
+pseudo-aléatoires. Il est pour l'instant moins courrant mais plus efficace que
+le Mersenne Twister.\footnote{https://en.wikipedia.org/wiki/Xorshift}
 
 \subsection{Vrai chaos déterministe}
+\ldots (à remplir par Yves)
 
-\section{Générateurs de ``vraies'' suites aléatoires}
+\section{Générateurs de ``vraies'' suites aléatoires}\label{s:TRNG}
 \subsection{Généralités - Processeur incapable}
  \begin{itemize}
  \item Processeur arrive plutôt bien à propager de l’aléatoire
@@ -134,11 +210,18 @@ von Neumann\cite{VonNeumann} (bla)
  \end{itemize}
 
 \section{Que fait le module ``random'' de Python?}
-bla sur les PRNG et TRNG utilisés (indirectement) par Python et résumé de
-résultats de petits tests
+(à compléter par DK, ou supprimer du rapport et mentionner juste python dans la
+section Mersenne Twister)
 
 \section{Conclusion}
-bla bla
+Le sujet de la génération de nombres aléatoires par un ordinateur s'est avéré
+beaucoup plus vaste qu'on aurait pu l'imaginer. D'un côté, les méthodes
+arithmétiques employant des suites de nombres déterministes de grande période
+présentant une distribution quasi-uniforme sont en évolution permanente. De
+l'autre, la cryptographie nécessite sans cesse des progrès dans les moyens de
+construire des ``vrais'' nombres aléatoires à partir de sources
+physiques. Vraisemblablement, il y aura de quoi donner du fil à retordre à
+beaucoup de chercheurs pendant les prochaines décennies.
 
 \addcontentsline{toc}{section}{Références}
 \printbibliography
