@@ -30,26 +30,28 @@
   showstringspaces=False,
   literate={é}{{\'e}}1
 }
+\usepackage{array}
 \title{Projet \textit{RNG}}
 \subtitle{Algorithmes et Structures de Données II}
-\author{Juan-Carlos Barros, Yves Dethurens, Daniel Kessler et Jean-Francis Ravoux}
+\author{Juan-Carlos Barros, Yves Dethurens,\\ Daniel Kessler et Jean-Francis Ravoux}
 % et c'est parti
 \begin{document}
 \begin{frame}
   \titlepage
-\end{frame}
-
+\end{frame} % titre
 \begin{frame}
   \tableofcontents
-\end{frame}
+\end{frame} % toc
+
+\begin{frame}{Dans quels domaines a-t-on des nombres aléatoires?}
+  \begin{tabular}{m{.45\textwidth}m{.4\textwidth}}
+  \includegraphics[width=.4\textwidth]{img/rng_gaming.png}&
+  \includegraphics[width=.25\textwidth]{img/xkcd_sports.png}
+  \end{tabular}\par
+  \includegraphics[width=.8\textwidth]{img/dilbert_financial.png}
+  \end{frame}
 
 \section{Distributions}
-\begin{frame}
-  \frametitle{Distributions aléatoires}
-  \begin{center}
-    Que veut-on simuler avec des ``nombres aléatoires''?    
-  \end{center}
-\end{frame}
 \begin{frame}
   \frametitle{Distributions aléatoires discrètes}
   \begin{itemize}
@@ -123,6 +125,13 @@
     \node at (\dx+1.5, \dy+2.2) {autre};
     }
   \end{tikzpicture}
+\end{frame}
+\begin{frame}
+  \frametitle{Génération de nombres aléatoires}
+  \begin{center}
+    \includegraphics[width=.6\textwidth]{img/xkcd_fair.png}\par
+    (source: xkcd.com)
+  \end{center}
 \end{frame}
 
 \section{Exemple pour Jean-Francis}
