@@ -1,7 +1,5 @@
 \documentclass{beamer}
 
-% tout le bazar jusqu'à title, c'est du chinois beamer/pdf illisible...
-
 % importations de packages utiles
 \usepackage[utf8]{inputenc}  % pouvoir écrire avec des accents
 \usepackage[french]{babel}  % francophopnie
@@ -9,6 +7,7 @@
 \usepackage{tikz}  % pouvoir tracer des dessins sympas
 \usetheme{Boadilla}  % thème de beamer
 \usepackage{listingsutf8}  % rendu de "code" (avec config ci-dessous)
+% configuration de lstlisting pour montrer du code python
 \definecolor{lstcolor}{rgb}{0.9,0.95,0.95}
 \definecolor{lstcommentcolor}{rgb}{0.,0.2,0.}
 \lstset{
@@ -30,28 +29,138 @@
   showstringspaces=False,
   literate={é}{{\'e}}1
 }
-\usepackage{array}
+
+% table des matières locale
+\newcommand\minitoc{
+  \begin{frame}{\secname}
+    \tableofcontents[currentsection, hideothersubsections, ] %  sectionstyle=show/show]
+  \end{frame}
+}
+% ignorer toute une section sans utiliser des % de commentaire
+\newcommand\ignore[1]{}
+
+% options pour la page de titre
 \title{Projet \textit{RNG}}
 \subtitle{Algorithmes et Structures de Données II}
 \author{Juan-Carlos Barros, Yves Dethurens,\\ Daniel Kessler et Jean-Francis Ravoux}
+
 % et c'est parti
 \begin{document}
 \begin{frame}
   \titlepage
 \end{frame} % titre
-\begin{frame}
-  \tableofcontents
-\end{frame} % toc
 
-\begin{frame}{Dans quels domaines a-t-on des nombres aléatoires?}
-  \begin{tabular}{m{.45\textwidth}m{.4\textwidth}}
-  \includegraphics[width=.4\textwidth]{img/rng_gaming.png}&
-  \includegraphics[width=.25\textwidth]{img/xkcd_sports.png}
-  \end{tabular}\par
-  \includegraphics[width=.8\textwidth]{img/dilbert_financial.png}
+\section{Introduction}
+\minitoc
+\subsection{À quoi servent les RNG?}
+\begin{frame}{À quoi servent les Générateurs de Nombres Aléatoires?}
+  \begin{center}
+  \includegraphics[width=.4\textwidth]{img/rng_gaming.png}
+  \par\medskip
+  \includegraphics<2->[width=.8\textwidth]{img/dilbert_financial.png}
+  \end{center}
   \end{frame}
 
-\section{Distributions}
+\subsection{Que veut-on simuler?}
+\begin{frame}{Que veut-on simuler?}
+  \begin{itemize}
+  \item Des $001101001\ldots$ aléatoires de la taille d'un \textbf{mot machine}\medskip
+  \item<2-> Des nombres entre 0 et $2^{32} - 1$ ``tirés au hasard''
+    \medskip
+  \item<3-> Des nombres entre 0 et 1 \textbf{uniformément distribués}
+  \end{itemize}
+\end{frame}
+
+\subsection{Vrai ou pseudo aléatoire?}
+\begin{frame}
+  \frametitle{Vrai ou pseudo aléatoire?}
+  \begin{itemize}
+  \item<1-> À partir de données ``physiques'' \onslide<3>{(TRNG)}
+  \item<2-> Avec un algorithme déterministe  \onslide<3>{(PRNG)}
+  \end{itemize}
+  \begin{center}
+    \begin{minipage}{0.33\textwidth}
+    \includegraphics<1->[width=.7\textwidth]{img/xkcd_sports.png}
+    \end{minipage}
+    \begin{minipage}{0.65\textwidth}
+    \includegraphics<2->[width=.8\textwidth]{img/xkcd_fair.png}
+    \end{minipage}
+    \par
+    \onslide<2->{(source: xkcd.com)}
+  \end{center}
+\end{frame}
+
+\section{Générateurs de nombres pseudo-aléatoires}
+\minitoc
+\subsection{Caractéristiques communes}
+\begin{frame}
+  \frametitle{Générateurs de nombres pseudo-aléatoires}
+  Les Pseudo Random Number Generators (PRNG) génèrent:
+  \begin{itemize}
+  \item une \textbf{suite} de nombres de manière \textbf{déterministe} (et
+    ``sans histoire'')
+  \item<2-> à partir d'une \textbf{seed} (nombre initial)
+  \item<3-> avec une certaine \textbf{période}\par
+    (a priori limitée à $2^{32}$ pour des nombres à 32 bits, par exemple)
+  \end{itemize}
+\end{frame}
+
+\subsection{Générateurs linéaires congruents (LCG)}
+\begin{frame}{Générateurs linéaires congruents (LCG)}
+  Pour l'instant ceci est un exemple de mise en page pour JF
+  \begin{minipage}{0.32\textwidth}
+    \onslide<1->{Du texte inutile gauche\par}
+    \onslide<2->{Du texte inutile en plus}
+  \end{minipage}
+  \begin{minipage}{0.33\textwidth}
+    Du texte inutile central
+  \end{minipage}
+  \begin{minipage}{0.32\textwidth}
+    \only<1-2>{Du texte inutile droit}
+    \only<3->{Un texte différent}
+  \end{minipage}
+\end{frame}
+
+\subsection{Vrai chaos déterministe}
+\begin{frame}{Vrai chaos déterministe}
+  \ldots à remplir par Yves \ldots
+\end{frame}
+
+\section{Générateurs de nombres ``vraiment'' aléatoires}
+\minitoc
+\begin{frame}
+  \frametitle{Générateurs de nombres ``vraiment'' aléatoires}
+  Les True Random Number Generators (TRNG)\ldots\par
+  \ldots à remplir par JC\ldots
+\end{frame}
+
+\section{Que fait le module ``random'' de Python?}
+\minitoc
+\begin{frame}
+  \frametitle{Que fait le module ``random'' de Python?}
+  \begin{itemize}
+  \item Python fait appel à l'OS pour générer le TRNG.\par
+    \onslide<2->{L'OS implémente typiquement un algorithme HAVEGE.}
+    \begin{itemize}
+    \item<3-> utilisé directement par \texttt{random.SystemRandom} ou par
+      \texttt{secrets}
+      \par ce niveau d'aléatoire est nécessaire pour la cryptographie!
+    \item<4-> utilisé en tant que \textit{seed} par défaut pour le PRNG de \texttt{random}
+    \end{itemize}
+    \medskip
+  \item<5-> Python utilise le \textbf{Mersenne Twister} pour les suites PRNG
+    \begin{itemize}
+    \item<6-> L'algorithme est plus complexe que ceux que nous avons présentés
+    \item<7-> Il gère 624 nombres en parallèle, ce qui permet une période de
+      $2^{19937}-1$, nettement plus que la limite naturelle de $2^{32}$.
+    \item<8-> le module \texttt{random} fournit des fonctions transformant
+      directement ces nombres pour émuler des distributions aléatoires usuelles,
+      le tirage sans remise, etc.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\ignore{ % par le temps, on devra zapper - mais on garde le code ici si jamais
 \begin{frame}
   \frametitle{Distributions aléatoires discrètes}
   \begin{itemize}
@@ -126,54 +235,5 @@
     }
   \end{tikzpicture}
 \end{frame}
-\begin{frame}
-  \frametitle{Génération de nombres aléatoires}
-  \begin{center}
-    \includegraphics[width=.6\textwidth]{img/xkcd_fair.png}\par
-    (source: xkcd.com)
-  \end{center}
-\end{frame}
-
-\section{Exemple pour Jean-Francis}
-\begin{frame}{Exemple pour Jean-Francis}
-  \begin{minipage}{0.32\textwidth}
-    \onslide<1->{Du texte inutile gauche\par}
-    \onslide<2->{Du texte inutile en plus}
-  \end{minipage}
-  \begin{minipage}{0.33\textwidth}
-    Du texte inutile central
-  \end{minipage}
-  \begin{minipage}{0.32\textwidth}
-    \only<1-2>{Du texte inutile droit}
-    \only<3->{Un texte différent}
-  \end{minipage}
-  
-\end{frame}
-
-\section{``vrai'' ou ``pseudo''-aléatoire?}
-\begin{frame}
-  \frametitle{``vrai'' ou ``pseudo''-aléatoire?}
-  \ldots Telle est la question!
-\end{frame}
-
-\section{Générateurs de suites pseudo-aléatoires}
-\begin{frame}
-  \frametitle{Générateurs de suites pseudo-aléatoires}
-\end{frame}
-
-\section{Comment produire un ``seed''?}
-\begin{frame}
-  \frametitle{Comment produire un ``seed''?}
-\end{frame}
-
-\section{Que fait le module ``random'' de Python?}
-\begin{frame}
-  \frametitle{Que fait le module ``random'' de Python?}
-\end{frame}
-
-\section{Générateurs de suites ``vraiment'' aléatoires}
-\begin{frame}
-  \frametitle{Générateurs de suites ``vraiment'' aléatoires}
-  \ldots quantique \ldots
-\end{frame}
+}
 \end{document}
