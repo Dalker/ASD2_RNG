@@ -140,25 +140,44 @@
 \begin{frame}
   \frametitle{Que fait le module ``random'' de Python?}
   \begin{itemize}
-  \item Python fait appel à l'OS pour générer le TRNG.\par
+  \item Python fait appel à l'OS pour le TRNG.\par
     \onslide<2->{L'OS implémente typiquement un algorithme HAVEGE.}
+    \medskip
     \begin{itemize}
     \item<3-> utilisé directement par \texttt{random.SystemRandom} ou par
       \texttt{secrets}
       \par ce niveau d'aléatoire est nécessaire pour la cryptographie!
+      \medskip
     \item<4-> utilisé en tant que \textit{seed} par défaut pour le PRNG de \texttt{random}
     \end{itemize}
-    \medskip
-  \item<5-> Python utilise le \textbf{Mersenne Twister} pour les suites PRNG
+    \bigskip
+  \item<5-> Python utilise le \textbf{Mersenne Twister} en tant PRNG
     \begin{itemize}
     \item<6-> L'algorithme est plus complexe que ceux que nous avons présentés
+      \medskip
     \item<7-> Il gère 624 nombres en parallèle, ce qui permet une période de
       $2^{19937}-1$, nettement plus que la limite naturelle de $2^{32}$.
-    \item<8-> le module \texttt{random} fournit des fonctions transformant
-      directement ces nombres pour émuler des distributions aléatoires usuelles,
-      le tirage sans remise, etc.
     \end{itemize}
   \end{itemize}
+\end{frame}
+\begin{frame}[containsverbatim]{Que fait le module ``random'' de Python?}
+  Le module \texttt{random} fournit des fonctions transformant directement ces
+  nombres pour émuler des distributions aléatoires usuelles, le tirage sans
+  remise, etc.
+  \bigskip
+  
+\begin{lstlisting}
+import random
+
+# entier aléatoire entre 0 et 9
+n = random.randrange(10)
+
+# flottant aléatoire entre 0 et 10
+x = random.uniform(0, 10)
+
+# tirage de 2 éléments au hasard d'une liste
+l = random.sample(["a", "b", "c", "d", "e"], 2)
+\end{lstlisting}
 \end{frame}
 
 \ignore{ % par le temps, on devra zapper - mais on garde le code ici si jamais

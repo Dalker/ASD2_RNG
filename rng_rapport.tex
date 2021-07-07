@@ -122,7 +122,7 @@ pseudo-aléatoires devra donc garantis une période longue.
 \subsection{Générateurs linéaires congruents (LCG)}
 \ldots (à remplir par JF)
 
-\subsection{Mersenne Twister et les LFSR}
+\subsection{Mersenne Twister et les LFSR}\label{s:MT}
 La méthode la plus employée de nos jours est en fait le \textbf{Mersenne
   Twister} \cite{MT}. Une de ses particularités est de garder en mémoire à
 chaque étape non pas 1 mais 624 nombres de 32 bits. Chaque itération est un
@@ -210,8 +210,35 @@ le Mersenne Twister.\footnote{https://en.wikipedia.org/wiki/Xorshift}
  \end{itemize}
 
 \section{Que fait le module ``random'' de Python?}
-(à compléter par DK, ou supprimer du rapport et mentionner juste python dans la
-section Mersenne Twister)
+Python fait appel à l'OS pour générer des ``vrais'' nombres aléatoires.
+Celui-ci implémente typiquement un algorithme HAVEGE.
+On peut y accéder directement à travers la classe \texttt{random.SystemRandom} ou par
+le module dédié  \texttt{secrets}, qui, comme son nom l'indique, a pour but de
+fournir des nombres suffisamment aléatoires pour la cryptographie.
+
+En guise de PRNG, le module \texttt{random} fait appel au Mersenne Twister (voir
+section \ref{s:MT}), implémenté de manière sous-jacente en C afin d'être rapide,
+efficace et isolé (vu comme une ``opération atomique'' par l'interprétateur
+Python, ce qui évite des soucis dans le cadre de la programmation concurrente).
+La \textit{seed} par défaut est obtenue par le générateur aléatoire de l'OS,
+mais elle peut aussi être initialisée ``à la main'' si nécessaire.
+
+Le module \texttt{random} fournit des fonctions transformant directement les
+nombres générés par le Mersenne Twister de manière à émuler plusieurs
+distributions aléatoires usuelles (uniforme, normale, etc.) ainsi que le tirage
+d'une sous-collection aléatoire d'une collection donnée.
+\begin{lstlisting}
+  import random
+
+  # entier aléatoire entre 0 et 9
+  n = random.randrange(10)
+
+  # flottant aléatoire entre 0 et 10
+  x = random.uniform(0, 10)
+
+  # tirage de 2 éléments au hasard d'une liste
+  l = random.sample(["a", "b", "c", "d", "e"], 2)
+\end{lstlisting}
 
 \section{Conclusion}
 Le sujet de la génération de nombres aléatoires par un ordinateur s'est avéré
