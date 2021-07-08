@@ -56,6 +56,7 @@
 \begin{frame}
   \titlepage
 \end{frame} % titre
+\author{JCB, YD, DK, JFR}
 
 \section{Introduction}
 \minitoc
@@ -358,6 +359,22 @@ x = random.uniform(0, 10)
 # tirage de 2 éléments au hasard d'une liste
 l = random.sample(["a", "b", "c", "d", "e"], 2)
 \end{lstlisting}
+\end{frame}
+
+\begin{frame}{Est-ce que ça marche?}
+  Tirages aléatoires avec \texttt{random.uniform(0, 1)} à partir d'une même
+  seed.
+  \vspace{-3ex}
+  \begin{center}
+    \includegraphics[width=0.5\textwidth]{img/uniformes.png}
+  \end{center}
+  code source: \url{github.com/dalker/ASD2_RNG/Code}
+\end{frame}
+
+\begin{frame}{FIN}
+  \begin{center}
+    \includegraphics[width=.7\textwidth]{img/dilbert_evil.png}
+  \end{center}
 \end{frame}
 
 \ignore{ % par le temps, on devra zapper - mais on garde le code ici si jamais
