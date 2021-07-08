@@ -1,0 +1,113 @@
+\documentclass{beamer}
+
+% tout le bazar jusqu'à title, c'est du chinois beamer/pdf illisible...
+
+% importations de packages utiles
+\usepackage[utf8]{inputenc}  % pouvoir écrire avec des accents
+\usepackage[french]{babel}  % francophopnie
+\usepackage{hyperref}  % liens clicables dans pdf final
+\usepackage{tikz}  % pouvoir tracer des dessins sympas
+\usepackage{graphicx}
+
+\usetheme{Boadilla}  % thème de beamer
+\usepackage{listingsutf8}  % rendu de "code" (avec config ci-dessous)
+\definecolor{lstcolor}{rgb}{0.9,0.95,0.95}
+\definecolor{lstcommentcolor}{rgb}{0.,0.2,0.}
+\lstset{
+  frameround=tttt,
+  %autogobble,
+  frame=single,
+  backgroundcolor=\color{lstcolor},
+  % extendedchars=true,
+  % basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries\color{blue},
+  identifierstyle=\bfseries\color{red},
+  stringstyle=\bfseries\color{orange},
+  commentstyle=\color{lstcommentcolor},
+  language=Python,
+  keepspaces=True,
+  basicstyle=\fontfamily{pcr}\selectfont\small, % monospace it for copypasting
+  upquote=true,
+  columns=flexible,
+  showstringspaces=False,
+  literate={é}{{\'e}}1
+}
+\title{Projet \textit{RNG}}
+\subtitle{Algorithmes et Structures de Données II}
+\author{Juan-Carlos Barros, Yves Dethurens, Daniel Kessler et Jean-Francis Ravoux}
+% et c'est parti
+\begin{document}
+
+% \section{Exemple pour Jean-Francis}
+% \begin{frame}{Exemple pour Jean-Francis TEXTE}
+%   \begin{minipage}{\textwidth}
+%     \onslide<1->{Du texte 1 Du texte 1Du texte 1Du texte 1Du texte 1Du texte 1\par}
+%     \onslide<2->{Du texte 2 Du texte 2Du texte 2Du texte 2Du texte 2Du texte 2}
+%   \end{minipage}
+%   \begin{minipage}{0.33\textwidth}
+%     Du texte inutile à gauche
+%   \end{minipage}
+
+%     \begin{minipage}{0.32\textwidth}
+%     \only<1-2>{Du texte inutile milieu PROBLEME}
+%     \only<3->{Un texte différent}
+%   \end{minipage}
+
+% \end{frame}
+
+
+  % \begin{minipage}{0.67\textwidth}
+    % \only<2>{Cas 1: X_n \in [0,2,3,1] période p = 4}
+  %   \onslide<3->{Cas 2: X_n \in [0,2,1,6,8,7,3,5,4]\par
+  %   période p = 9}
+  %   \onslide<4->{Maximiser les nombres aléatoires\par
+  %   module m grand\\
+  %   conditions sur a et c ("magic values)}
+  % \end{minipage}
+
+\section{Les Générateurs de Congruence Linéaire}
+\begin{frame}{Les Générateurs de Congruence Linéaire}
+  \begin{minipage}{\textwidth}
+    \only<1,4,5>{\begin{figure}
+      \includegraphics[scale=1]{GCL1-général.png}
+      \end{figure}\par}
+    \only<2>{\begin{figure}
+      \includegraphics[scale=1]{GCL1-val1.png}
+      \end{figure}\par}
+    \only<3>{\begin{figure}
+      \includegraphics[scale=1]{GCL1-val2-magic.png}
+      \end{figure}\par}
+    
+  \end{minipage}
+
+  \begin{minipage}{0.32\textwidth}
+    \onslide<1->{[m] module m \\
+    a multiplicateur \\
+    c incrément \\
+    $X_0$ graine \\
+    $X_{n} \in \{0, .., m-1\}$\par}
+  \end{minipage}
+  % \begin{minipage}{0.33\textwidth}
+  %   Du texte inutile
+  % \end{minipage}
+  \begin{minipage}{0.67\textwidth}
+    \only<2>{Cas 1: $X_n \in [1,0,2,3,1]$ \\ période p = 4}
+    \only<3>{Cas 2: $X_n \in [4,0,2,1,6,8,7,3,5,4]$\\ période p = 9}
+    \only<4>{Cas 1: (a=3,c=2,m=5) mauvaises valeurs \\ Cas 2: (a=4,c=2,m=9) valeurs magiques\\
+    conditions pour optimiser les nombres aléatoires:\\
+    module grand\\
+    conditions sur a et c pour maximiser p
+    }
+    % \only<5>{Critères:\\
+    % PGCD(a,m)=1;PGCD(c,m)=1\\
+    % m multiple d'un nombre premier alors a-1 est multiple de ce nombre\\
+    % a-1 est multiple de 4 si m est multiple de 4 }
+    \only<5>{
+    RANDU (IBM) $X_{n+1} =65539 X_{n} [2^{31}]$\\
+    Turbo Pascal $X_{n+1} =(129 X_{n} + 907633385)[2^{32}]$\\
+    Unix $X_{n+1} =(1103515245 X_{n}+12345) [2^{31}]$}
+  \end{minipage}
+
+\end{frame}
+
+\end{document}
