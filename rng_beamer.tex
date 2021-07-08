@@ -36,6 +36,13 @@
     \tableofcontents[currentsection, hideothersubsections, ] %  sectionstyle=show/show]
   \end{frame}
 }
+\newcommand\subminitoc{
+  \begin{frame}{\secname}
+    \tableofcontents[currentsubsection, hideothersubsections,
+    sectionstyle=show/shaded, subsectionstyle=show/shaded, subsubsectionstyle=show]
+  \end{frame}
+}
+
 % ignorer toute une section sans utiliser des % de commentaire
 \newcommand\ignore[1]{}
 
@@ -123,8 +130,105 @@
 \end{frame}
 
 \subsection{Vrai chaos déterministe}
-\begin{frame}{Vrai chaos déterministe}
-  \ldots à remplir par Yves \ldots
+\subminitoc
+\begin{frame}
+\frametitle{Vrai chaos déterministe}
+Le problème des générateurs basés sur la théorie des nombres, c’est qu’ils produisent des séquences périodiques, qui possèdent des propriétés qui rend la suite en partie prévisible, parce que les nombres générés sont dépendants de ceux qui les précédent. Ce qui ne se produit jamais dans une vraie suite aléatoire ! \\
+D’autres générateurs, basés sur la théorie du chaos, sont imprévisibles (par définition, voir plus bas), mais il est généralement plus difficile de garantir que ceux-ci ont une période longue, et ils sont moins répandus que les générateurs basés sur la théorie des nombres. \\
+Le générateur de nombres pseudo-aléatoires présenté ci-dessous (Saito \& Yamaguchi 2017) utilise les deux théories pour produire des suites qui ressemblent à de vraies suites aléatoires non périodiques. Son coût computationnel est élevé, mais les séquences générées peuvent par exemple servir de référence pour des tests qualitatifs. 
+\end{frame}
+
+\subsubsection{Décalage de Bernouilli}
+\begin{frame}
+\frametitle{Point de départ : décalage de Bernoulli}
+
+La relation $\alpha_{n+1}=(2\alpha_n)\ mod\ 1$  définit une suite où $\alpha_n \in [0;1[$. En arrondissant les termes de cette suite, on obtient une séquence binaire pseudo-aléatoire. \\
+Exemple : $\alpha_0$ = 0.3 donne la suite \{ 0.3; \textbf{0.6}; 0.2; 0.4; 0.8; \textbf{0.6}; … \} \\
+ou la séquence 01001100110011001... qui est périodique et donc très prévisible. \\
+Mais si $\alpha_0$ est \textbf{irrationnel}, cette suite devient \textbf{non périodique}. Cela signifie qu’une infinitésimale variation de $\alpha_0$ provoquera un changement radical à un moment de la séquence. Cette forte sensibilité aux conditions initiales est une caractéristique des fonctions chaotiques : au bout d'un certain temps, un phénomène chaotique devient imprévisible.
+Une loi déterministe va évidemment être prévisible si ses paramètres sont entièrement connus. Mais si les conditions initiales contiennent une part d’incertitude (par exemple une imprécision, même minime), alors un tel processus chaotique ne permet plus de prévision à long terme.
+\end{frame}
+
+\begin{frame}
+\frametitle{décalage de Bernoulli : annexe}
+Exemple comparé, avec  $\alpha_0 = \frac{\pi}{4}$   et   $\overline{\alpha}_0 = \frac{355}{452}$, deux valeurs très proches :
+\begin{tabular}{|*{7}{c|}}
+\
+& \multicolumn{3}{|c|}{suite irrationnelle} 
+& \multicolumn{3}{|c|}{suite rationnelle} \\
+$n$ & $\alpha_n$ & valeur & $\epsilon_n$ & $\overline{\epsilon}_n$ & valeur & $\overline{\alpha}_n$ \\ 
+\hline
+0 & $\pi/4$ & \textbf{0.78539816} & 1 & 1 & \textbf{0.78539823} & $\frac{355}{452}$ \\
+1 & $\pi/2-1$ & 0.57079632 & 1 & 1 & 0.57079646 & $\frac{258}{452}$ \\
+2 & $\pi-3$ & 0.14159265 & 0 & 0 & 0.14159292 & $\frac{64}{452}$ \\
+3 & $2\pi-6$ & 0.28318530 & 0 & 0 & 0.28318584 & $\frac{128}{452}$ \\
+4 & 4$\pi$‒12 & 0.56637061 & 1 & 1 & 0.56637168 & $\frac{256}{452}$ \\
+5 & 8$\pi$‒25 & 0.13274122 & 0 & 0 & 0.13274336 & $\frac{60}{452}$ \\
+6 & 16$\pi$‒50 & 0.26548245 & 0 & 0 & 0.26548672 & $\frac{120}{452}$ \\
+7 & 32$\pi$‒100 & 0.53096491 & 1 & 1 & 0.53097345 & $\frac{240}{452}$ \\
+8 & 64$\pi$‒201 & 0.06192982 & 0 & 0 & 0.06194690 & $\frac{28}{452}$ \\
+9 & 128$\pi$‒402 & 0.12385965 & 0 & 0 & 0.12389380 & $\frac{56}{452}$ \\
+10 & 256$\pi$‒804 & 0.24771931 & 0 & 0 & 0.24778761 & $\frac{112}{452}$ \\
+11 & 512$\pi$‒1608 & 0.49543863 & 0 & 0 & 0.49557522 & $\frac{224}{452}$ \\
+12 & 1024$\pi$‒3216 & 0.99087727 & 1 & 1 & 0.99115044 & $\frac{448}{452}$ \\
+13 & 2048$\pi$‒6433 & 0.98175455 & 1 & 1 & 0.98230088 & $\frac{444}{452}$ \\
+14 & 4096$\pi$‒12867 & 0.96350910 & 1 & 1 & 0.96460176 & $\frac{436}{452}$ \\
+15 & 8192$\pi$‒25735 & 0.92701820 & 1 & 1 & 0.92920353 & $\frac{420}{452}$ \\
+16 & 16384$\pi$‒51471 & 0.85403641 & 1 & 1 & 0.85840707 & $\frac{388}{452}$ \\
+17 & 32768$\pi$‒102943 & 0.70807283 & 1 & 1 & 0.71681415 & $\frac{324}{452}$ \\
+18 & 65536$\pi$‒205887 & 0.41614566 & 0 & 0 & 0.43362831 & $\frac{196}{452}$ \\
+19 & 131072$\pi$‒411774 & 0.83229132 & 1 & 1 & 0.86725663 & $\frac{392}{452}$ \\
+20 & 262144$\pi$‒823549 & 0.66458264 & 1 & 1 & 0.73451327 & $\frac{332}{452}$ \\
+21 & 524288$\pi$‒1647099 & 0.32916528 & 0 & 0 & 0.46902654 & $\frac{212}{452}$ \\
+22 & 1048576$\pi$‒3294198 & 0.65833057 & 1 & 1 & 0.93805309 & $\frac{424}{452}$ \\
+23 & 2097152$\pi$‒6588397 & 0.31666114 & 0 & 1 & 0.87610619 & $\frac{396}{452}$ \\
+23 & 4194304$\pi$‒13176794 & 0.63332228 & 1 & 1 & 0.75221238 & $\frac{340}{452}$ \\
+24 & 8388608$\pi$‒26353589 & 0.26664456 & 0 & 1 & 0.50442477 & $\frac{228}{452}$ \\
+25 & 16777216$\pi$‒52707178 & 0.53328913 & 1 & 0 & 0.00884955 & $\frac{4}{452}$ \\
+26 & 33554432$\pi$‒105414357 & 0.06657826 & 0 & 0 & 0.01769911 & $\frac{8}{452}$ \\
+27 & 67108864$\pi$‒210828714 & 0.13315653 & 0 & 0 & 0.03539823 & $\frac{16}{452}$ \\
+28 & 134217728$\pi$‒421657428 & 0.26631307 & 0 & 0 & 0.07079646 & $\frac{32}{452}$ \\
+29 & 268435456$\pi$‒843314856 & 0.53262615 & 1 & 0 & 0.14159292 & $\frac{64}{452}$ \\
+\end{tabular}
+\end{frame}
+
+\subsubsection{Sensibilité aux conditions initiales}
+\begin{frame}
+\frametitle{décalage de Bernoulli : sensibilité aux conditions initiales}
+On voit (cf.annexe) que les deux suites, malgré un point de départ presque identique, divergent complètement à partir de n = 20. Cela montre le caractère chaotique de la structure : sans la connaissance de la huitième décimale de $\alpha_0$,  impossible de prévoir le comportement de cette suite au-delà du 20e terme.\\
+On sait dès lors que l’observation des 20 premiers termes ne permet pas d’en déduire la suite.\\  
+\ \\
+\textbf{Problème} : si on s’intéresse à la suite irrationnelle, parfaitement aléatoire en apparence, le problème est qu’il faut connaître le nombre irrationnel de départ (ici $\alpha_0 = \frac{\pi}{4}$) avec une précision croissante. Cela demandera un temps de calcul de plus en plus important, et ne ne sera plus possible pour de très grandes valeurs de $n$. \\
+Il faut pouvoir gérer des valeurs exactes pour $\alpha_n$!
+\end{frame}
+
+\subsubsection{Racines irrationnelles du 3è degré}
+\begin{frame}
+\frametitle{Racines irrationnelles du 3e degré}
+Saito et Yamaguchi (2017) proposent une solution à ce problème: en choisissant $\alpha_0$  comme racine d’un polynôme du 3e degré $f_0$ dont les coefficients sont entiers, et qui a une unique racine réelle. \\
+Ainsi, on peut facilement déterminer le polynôme $f_1$ dont $\alpha_1$ est la racine, et ainsi de suite. \\
+Exemple : on pose $f_0(x) = x^3+x–1$ et $f_n(x) = x^3+b_nx^2+c_nx–d_n$, avec $f_n(\alpha_n) = 0$, et $\epsilon_n = (\alpha_n)$.
+\includegraphics[scale=0.75]{img/SaitoYamaguchi2017.png}
+\end{frame}
+
+\subsubsection{Calcul de la séquence}
+\begin{frame}
+\frametitle{Calcul de la séquence}
+Alors les relations ci-dessous permettent d'éviter le calcul des $\alpha_n$ : \\
+\begin{tabular}{ l l }
+$a_n$ = 1 & $b_{n+1}$ = $2b_n+3\epsilon_n$ \\ 
+$c_{n+1} = 4c_n+(4b_n+3)\epsilon_n$ 
+& $d_{n+1} = 8d_n+(4c_n+2b_n+1)\epsilon_n$ \\
+\multicolumn{2}{l}{$1 + 2b_n + 4c_n + 8d_n < 0 \ \Leftrightarrow \ \alpha_n > \frac{1}{2} \ \Leftrightarrow \ \epsilon_n = 1 $}
+\end{tabular} \\
+\ \\
+La production de la séquence pseudo-aléatoire $\{\epsilon_n\}_{n \in \mathbb{N}}$ consiste donc à déterminer les termes de la suite $\{ (b_n,c_n,d_n,\epsilon_n) \}_{n \in \mathbb{N}}$. Celle-ci se construit entièrement  avec des opérations élémentaires, sans avoir à extraire les racines $\alpha_n$ qui restent implicites. \\
+\ \\
+Selon les auteurs, en choisissant bien les coefficients du polynôme initial $f_0$, on peut vérifier que la séquence binaire produite est presque uniformément distribuée sur l’intervalle [0;1]. \\
+\ \\
+\textbf{Référence} : \\
+\textit{Pseudorandom number generator based on the Bernoulli map on cubic algebraic integers}, 
+Asaki Saito \& Akihiro Yamaguchi, 2017. 
 \end{frame}
 
 \section{Générateurs de nombres ``vraiment'' aléatoires}
