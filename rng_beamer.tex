@@ -238,6 +238,82 @@ Asaki Saito \& Akihiro Yamaguchi, 2017.
   Les True Random Number Generators (TRNG)\ldots\par
   \ldots à remplir par JC\ldots
 \end{frame}
+\subsection{Généralités - Processeur incapable}
+\begin{frame}{Généralités - Processeur incapable}
+\begin{itemize}
+ \item Processeur arrive plutôt bien à propager de l’aléatoire
+ \item Voir algorithmes présentés précédemment
+ \item Mais il lui faut un coup de pouce au départ
+ \item  Besoin d’une graine pour démarrer
+ \item Pourquoi hasard inaccessible au processeur?
+ \item Car le processeur est profondément déterministe
+ \end{itemize}  
+\end{frame}
+
+\subsection{Généralités - Le Monde réel oui}
+\begin{frame}{Généralités - Le Monde réel oui}
+ \begin{itemize}
+ \item Aléatoire inévitable et dérangeant dans le monde réel!
+   \begin{itemize}
+   \item Incertitudes fondamentales des mesures
+   \item Impossibilité de contrôler une valeur physique
+   \end{itemize}
+ \item Monde réel est donc LA source d’inspiration
+ \end{itemize}
+\end{frame}
+
+\subsection{Collection d'entropie}
+\begin{frame}{Collection d'entropie}
+  \begin{itemize}
+  \item Principales sources de hasard:
+    \begin{itemize}
+    \item phénomènes physiques stochastiques:
+      \begin{itemize}
+      \item bruit thermique (Johnson et Nyquist)
+      \item autres phénomènes statistiques (vagues, etc.)
+      \end{itemize}
+    \item phénomènes quantiques intrinsèquement aléatoires
+      \begin{itemize}
+      \item effet photoélectrique
+      \item n’importe quelle autre mesure quantique
+      \end{itemize}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\subsection{Algorithmes d'aggrégation et expansion d'entropie}
+\begin{frame}{Algorithmes d'aggrégation et expansion d'entropie}
+ \begin{itemize}
+ \item Algorithme pour grossir le flux de TRNG (pas assez rapide)
+ \item HAVEGE (utilisé par le noyau Linux)
+ \item HArdware Volatile Entropy Gathering and Expansion
+ \item https://www.irisa.fr/caps/projects/hipsor/misc.php
+ \end{itemize}
+\end{frame}
+
+\subsection{Le futur est-il quantique?}
+\begin{frame}{Le futur est-il quantique?}
+ \begin{itemize}
+ \item Sources quantiques:
+   \begin{itemize}
+   \item source de radioactivité détectée par un compteur Geiger
+   \item photons traversant un miroir semi-réfléchissant
+   \item C’est le choix de la compagnie Genevoise ID Quantique
+   \end{itemize}
+ \end{itemize}
+\end{frame}
+
+\subsection{Exemple genevois: ID Quantique}
+\begin{frame}{Exemple genevois: ID Quantique}
+  \begin{itemize}
+  \item Principe de la source ID Quantique:
+    \begin{itemize}
+    \item photons traversant un miroir semi-réfléchissant
+    \item événements mutuellement exclusifs (réflexion / transmission)
+    \item Détection associée respectivement à des valeurs de bit 0 ou 1
+    \end{itemize}
+  \end{itemize}
+\end{frame}
 
 \section{Que fait le module ``random'' de Python?}
 \minitoc
