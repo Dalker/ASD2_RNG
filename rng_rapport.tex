@@ -266,70 +266,67 @@ uniformément distribuée sur l’intervalle [0;1]. \par
 
 
 \section{Générateurs de ``vraies'' suites aléatoires}\label{s:TRNG}
-\subsection{Généralités - Processeur incapable}
- \begin{itemize}
- \item Processeur arrive plutôt bien à propager de l’aléatoire
- \item Voir algorithmes présentés précédemment
- \item Mais il lui faut un coup de pouce au départ
- \item  Besoin d’une graine pour démarrer
- \item Pourquoi hasard inaccessible au processeur?
- \item Car le processeur est profondément déterministe
- \end{itemize}
+\subsection{Processeur désarmé}
+Le processeur est incapable de générer de vrais nombres aléatoires puisqu’il est intrinsèquement déterministe. Tout est prévisible dans son fonctionnement. Si on lui donne plusireus fois une même instruction et des mêmes données, il donnera toujours la même réponse.\par
+Malgré cela, on a vu qu’il était capable de propager l’entropie (source de hasard) grâce à des algorithmes. Il lui font juste une graine (seed) pour s’assurer qu’il ne fournira pas toujours la même suite de nombres.\par
+Si la graine n’est pas un vrai nombre aléatoire, l’ensemble de la suite pourrait être deviné et cela est intolérable, notamment dans les protocoles sécuritaires de chiffrage.\par
+Il nous faudrait donc une graine vraiment imprévisible pour assurer une source de nombres aléatoires fiables mais comment la générer?
 
-\subsection{Généralités - Le Monde réel oui}
- \begin{itemize}
- \item Aléatoire inévitable et dérangeant dans le monde réel!
-  \begin{itemize}
-  \item Incertitudes fondamentales des mesures
-  \item Impossibilité de contrôler une valeur physique
-  \end{itemize}
- \item Monde réel est donc LA source d’inspiration
- \end{itemize}
+\subsection{Source d'entropie interne}
+Pour pallier ce problème informatique, il existe des algorithmes qui combinent de nombreuses sources d'entropie dans l’état interne de l’ordinateur pour en tirer un résultat pseudo aléatoire. \par
+On peut citer, par exemple, HAVEGE (HArdware Volatile Entropy Gathering and Expansion) qui est implémenté dans le noyau Linux pour créer des listes de graines utilisables par les algorithmes PRNG.\par
+HAVEGE combine des milliers de paramètres de l’état interne (horloge, registres, mémoire cache, branch predictor, etc) puis en tire un nombre qui n’est pas véritablement aléatoire mais impossible à prédire car dépendant de trop nombreux paramètres qu’un hackeur ne pourrait pas geler ou deviner en temps réel.
+Pour plus de détails: voir \href{https://www.irisa.fr/caps/projects/hipsor/misc.php}{ici}.
 
-\subsection{Collection d'entropie}
- \begin{itemize}
- \item Principales sources de hasard:
-  \begin{itemize}
-  \item phénomènes physiques stochastiques:
-   \begin{itemize}
-   \item bruit thermique (Johnson et Nyquist)
-   \item autres phénomènes statistiques (vagues, etc.)
-   \end{itemize}
-  \item phénomènes quantiques intrinsèquement aléatoires
-   \begin{itemize}
-   \item effet photoélectrique
-   \item n’importe quelle autre mesure quantique
-   \end{itemize}
-  \end{itemize}
- \end{itemize}
+\subsection{Source d'entropie externe}
+On l'a dit, l'ordinateur est incapable de produire du vrai hasard. Paradoxalement, on a la situation inverse dans le monde physique: on est toujours embêté par l’incertitude des mesures et par le fait qu’on ne peut pas contrôler une valeur physique avec une précision arbitraire. \par
+Prenons l’exemple de la température: on ne peut pas mesurer la température d’un four avec une infinité de décimales et on peut encore moins stabiliser la température du four à une valeur donnée. \par
+Il semble donc que le monde physique pourrait nous fournir une vraie source d’entropie (hasard) inaltérable. \par
+On va voir deux catégories de sources physiques:
+\begin{itemize}
+\item phénomènes classiques (statistiques)
+\item phénomènes quantiques (individuels)
+\end{itemize}
 
-\subsection{Algorithmes d'aggrégation et expansion d'entropie}
- \begin{itemize}
- \item Algorithme pour grossir le flux de TRNG (pas assez rapide)
- \item HAVEGE (utilisé par le noyau Linux)
- \item HArdware Volatile Entropy Gathering and Expansion
- \item https://www.irisa.fr/caps/projects/hipsor/misc.php
- \end{itemize}
+\subsubsection{Entropie classique}
+Parmis les sources d’entropie naturelle, on trouve tous les processus stochastiques où des lois microscopiques (déterministes ou pas) sont implémentées sur des myriades d’éléments; ceci aboutit à une mesure macroscopique (comme la température) qu’il est impossible de prédire avec une précision infinie car elle dépend de trop de paramètres (état interne). \par
+Un exemple typique est le bruit thermique correspondant aux fluctuations de la tension électrique aux bornes d’une résistance à une certaine température. En effet, le mouvement imprévisible des électrons se traduit en courant électrique et ceci affecte la tension. \par
+Ceci a été découvert en 1927 par Johnson puis expliqué théoriquement par Nyquist (\href{https://journals.aps.org/pr/abstract/10.1103/PhysRev.32.97}{Johnson} \& \href{https://journals.aps.org/pr/abstract/10.1103/PhysRev.32.110}{Nyquist}). \par
+Imaginons donc qu’on mesure la variation de la tension aux bornes de la résistance, on aurait une bonne source de hasard. \par
+Un autre exemple serait la mesure de la hauteur de l'eau dans un océan. La houle ou les vagues provoquées par le vent entraîne là aussi une impossibilité de prévoir à long terme la hauteur de l'eau. Il convient de remarquer que l'échantillonage des valeurs aléatoires ne devra pas dépasser une fréquence qui dépend de la source employée. \par
+Mais même si la suite temporelle de valeurs de la tension ou de la hauteur de l'eau est chaotique, elle n'est pas forcément entièrement imprévisible, dumoins en théorie. C'est ce que proclament les défendeurs de la prochaine source d'entropie...
 
-\subsection{Le futur est-il quantique?}
- \begin{itemize}
- \item Sources quantiques:
-  \begin{itemize}
-  \item source de radioactivité détectée par un compteur Geiger
-  \item photons traversant un miroir semi-réfléchissant
-  \item C’est le choix de la compagnie Genevoise ID Quantique
-  \end{itemize}
- \end{itemize}
+\subsubsection{Entropie quantique}
+Les phénomènes quantiques ont l’avantage d’être intrinsèquement indéterministes. 
+Exemples: 
+\begin{itemize}
+\item source de radioactivité détectée par un compteur Geiger
+\item photons traversant un miroir semi-réfléchissant
+\end{itemize}
+Dans ces deux cas, on ne peut pas deviner le résultat d’une mesure, même si l'on connaît parfaitement l’état interne du système car il est dans une superposition quantique d’états que seule la mesure va briser en \href{https://fr.wikipedia.org/wiki/R\%C3\%A9duction_du_paquet_d\%27onde}{réduisant le paquet d’onde}.
 
-\subsection{Exemple genevois: ID Quantique}
- \begin{itemize}
- \item Principe de la source ID Quantique:
-  \begin{itemize}
-  \item photons traversant un miroir semi-réfléchissant
-  \item événements mutuellement exclusifs (réflexion / transmission)
-  \item Détection associée respectivement à des valeurs de bit 0 ou 1
-  \end{itemize}
- \end{itemize}
+\subsubsection{ID Quantique}
+ID Quantique est une entreprise genevoise, spin off de l’université de Genève, fondée en 2001 par 3 scientifiques (Nicolas Gisin, Hugo Zbinden et l’actuel CEO Grégoire Ribordy qui nous a accordé une interview) \par
+Elle a trois principales branches d’activité (\href{https://www.idquantique.com/quantum-sensing/overview/}{détecteurs quantiques}, partage de clefs quantique \href{https://www.idquantique.com/quantum-safe-security/overview/}{QKD} et Génération quantique de nombres aléatoires \href{https://www.idquantique.com/random-number-generation/overview/}{QRNG}) \par
+Le principe du QRNG chez ID Quantique est le suivant:
+\begin{center}
+  \includegraphics[scale=0.25]{img/Figure1.OpticalSystemUsedTuGenerateRandomNumbers.jpg}  
+\end{center}
+
+\begin{enumerate}
+\item Une diode LASER émet régulièrement un photon.
+\item Le photon émis arrive sur un miroir semi-réfléchissant
+\item Deux détecteurs sont à l'affût pour signaler si le photon a traversé ou a été réfléchi par le miroir.
+\item Le résultat est transformé en “1” ou en “0”.
+\item Un traitement logiciel (\href{https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-90r.pdf}{NIST 800-90}, \href{https://content.iospress.com/download/computability/com001?id=computability\%2Fcom001}{anti-aliasing}, etc.) est appliqué aux bits pour assurer l’équiprobabilité.
+\item Si le débit de nombres aléatoires n’est pas suffisant, on peut utiliser des PRNG se basant sur les graines produites par le QRNG pour l’augmenter.
+\end{enumerate}
+\begin{center}
+  \includegraphics[scale=0.5]{img/QRNG-core-technology-600x242.png}  
+\end{center}
+
+Ce processus est particulièrement imprédictible car au moment où le photon sort de la diode LASER, il n’a aucune caractéristique qui le prédétermine à être plutôt transmis que réfléchi ou l’inverse. En effet, tous les photons sont indistinguables à la sortie d'un LASER. Même au moment où il atteint le miroir, on ne sait toujours pas s’il a traversé ou s’il a été réfléchi car les deux phénomènes se produisent en réalité en parallèle. Ce n’est qu’au moment d’être effectivement détecté dans un des deux chemins que le paquet d’onde est réduit et que le photon devient une “particule réfléchie” ou une “particule transmise”. Impossible donc de recueillir des données innombrables sur l’état interne pour déduire de possibles résultats (comme ce pourrait être envisagé dans un TRNG classique)!
+
 
 \section{Que fait le module ``random'' de Python?}
 Python fait appel à l'OS pour générer des ``vrais'' nombres aléatoires.
