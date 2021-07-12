@@ -139,3 +139,5 @@ dmypy.json
 *.blg
 *.bcf
 *.run.xml
+*.synctex.gz
+*.pdf
