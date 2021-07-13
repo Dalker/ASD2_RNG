@@ -4,6 +4,7 @@
 \usepackage[utf8]{inputenc}  % pouvoir écrire avec des accents
 \usepackage[french]{babel}  % francophopnie
 \usepackage{amsmath}
+\usepackage{array}
 \usepackage{hyperref}  % liens clicables dans pdf final
 \usepackage{tikz}  % pouvoir tracer des dessins sympas
 \usetheme{Boadilla}  % thème de beamer
@@ -49,13 +50,16 @@
 
 % options pour la page de titre
 \title{Projet \textit{RNG}}
-\subtitle{Algorithmes et Structures de Données II}
-\author{Juan-Carlos Barros, Yves Dethurens,\\ Daniel Kessler et Jean-Francis Ravoux}
+\subtitle{Algorithmes et Structures de Données II} \author{Juan-Carlos Barros,
+  Yves Dethurens,\\ Daniel Kessler et Jean-Francis Ravoux}
 
 % et c'est parti
 \begin{document}
 \begin{frame}
   \titlepage
+  \begin{center}
+    \includegraphics[width=.8\textwidth]{img/dilbert_financial.png}    
+  \end{center}
 \end{frame} % titre
 \author{JCB, YD, DK, JFR}
 
@@ -65,12 +69,13 @@
 \begin{frame}{À quoi servent les Générateurs de Nombres Aléatoires?}
   \begin{center}
    \includegraphics[width=.3\textwidth]{img/rng_calm.png}
-   \includegraphics<2->[width=.4\textwidth]{img/rng_skill.png}
-  \par\medskip
-  \includegraphics<3->[width=.8\textwidth]{img/dilbert_financial.png}
+  % \includegraphics<2->[width=.4\textwidth]{img/rng_skill.png}
+  %\par\medskip
+  %\includegraphics<3->[width=.8\textwidth]{img/dilbert_financial.png}
   \end{center}
   \end{frame}
 
+\ignore{
 \subsection{Que veut-on simuler?}
 \begin{frame}{Que veut-on simuler?}
   \begin{itemize}
@@ -80,24 +85,31 @@
   \item<3-> Des nombres entre 0 et 1 \textbf{uniformément distribués}
   \end{itemize}
 \end{frame}
+}
 
 \subsection{Vrai ou pseudo aléatoire?}
 \begin{frame}
   \frametitle{Vrai ou pseudo aléatoire?}
   \begin{itemize}
-  \item<1-> À partir de données ``physiques'' \onslide<3>{(TRNG)}
-  \item<2-> Avec un algorithme déterministe  \onslide<3>{(PRNG)}
-  \end{itemize}
+  \item<1-> À partir de données ``physiques'' (TRNG)
+    \begin{center}
+      \begin{tabular}{>{\centering}m{.3\textwidth}>{\centering}m{.4\textwidth}}
+      \includegraphics[width=.2\textwidth]{img/vreneli.png}&
+      \includegraphics[width=.3\textwidth]{img/geiger.png}        
+      \end{tabular}
+    \end{center}
+  \item<2-> Avec un algorithme déterministe (PRNG)
   \begin{center}
-    \begin{minipage}{0.33\textwidth}
-    \includegraphics<1->[width=.7\textwidth]{img/xkcd_sports.png}
-    \end{minipage}
+%    \begin{minipage}{0.33\textwidth}
+%    \includegraphics<1->[width=.7\textwidth]{img/xkcd_sports.png}
+%    \end{minipage}
     \begin{minipage}{0.65\textwidth}
     \includegraphics<2->[width=.8\textwidth]{img/xkcd_fair.png}
     \end{minipage}
     \par
     \onslide<2->{(source: xkcd.com)}
   \end{center}
+  \end{itemize}
 \end{frame}
 
 \ignore{
@@ -127,8 +139,8 @@
 \end{frame}
 
 \ignore{
-\subsection{Générateurs linéaires congruents (LCG)}
-\begin{frame}{Générateurs linéaires congruents (LCG)}
+\subsection{Générateurs à congruence linéaire (LCG)}
+\begin{frame}{Générateurs à congruence linéaire (LCG)}
   Pour l'instant ceci est un exemple de mise en page pour JF
   \begin{minipage}{0.32\textwidth}
     \onslide<1->{Du texte inutile gauche\par}
@@ -143,10 +155,10 @@
   \end{minipage}
 \end{frame}
 }
-\section{Générateurs de Congruence Linéaire (LCG)}
+\section{Générateurs à Congruence Linéaire (LCG)}
 \minitoc
 \subsection{Explication de l'algorithme}
-\begin{frame}{Générateurs de Congruence Linéaire (LCG)}
+\begin{frame}{Générateurs à Congruence Linéaire (LCG)}
   \begin{minipage}{\textwidth}
     \only<1,4,5>{\begin{figure}
       \includegraphics[scale=1]{img/GCL1-général.png}
@@ -157,40 +169,42 @@
     \only<3>{\begin{figure}
       \includegraphics[scale=1]{img/GCL1-val2-magic.png}
       \end{figure}\par}
-    
   \end{minipage}
 
-  \begin{minipage}{0.32\textwidth}
-    \onslide<1->{[m] module m \\
-    a multiplicateur \\
-    c incrément \\
+  \begin{minipage}{0.27\textwidth}
+    \onslide<1->{$m$ module \\
+    $a$ multiplicateur \\
+    $c$ incrément \\
     $X_0$ graine \\
     $X_{n} \in \{0, .., m-1\}$\par}
   \end{minipage}
   % \begin{minipage}{0.33\textwidth}
   %   Du texte inutile
   % \end{minipage}
-  \begin{minipage}{0.67\textwidth}
-    \only<2>{Cas 1: $X_n \in [1,0,2,3,1]$ \\ période p = 4}
-    \only<3>{Cas 2: $X_n \in [4,0,2,1,6,8,7,3,5,4]$\\ période p = 9}
-    \only<4>{Cas 1: (a=3,c=2,m=5) mauvaises valeurs \\ Cas 2: (a=4,c=2,m=9) valeurs magiques\\
-    conditions pour optimiser les nombres aléatoires:\\
-    module grand\\
-    conditions sur a et c pour maximiser p
-    }
+  \begin{minipage}{0.72\textwidth}
+    \only<2>{Cas 1: $X_n = 1,0,2,3,1,\ldots$ \\ période $p = 4$}
+    \only<3>{Cas 2: $X_n = 4,0,2,1,6,8,7,3,5,4,\ldots$\\ période $p = 9$}
+    \only<4>{Cas 1: ($a=3$,
+      $c=2$, $m=5$) mauvaises valeurs \par
+      Cas 2: ($a=4$, $c=2$, $m=9$) valeurs magiques\par
+      conditions pour optimiser les nombres aléatoires:\par
+      module grand\par
+      conditions sur $a$ et $c$ pour maximiser $p$ }
     % \only<5>{Critères:\\
     % PGCD(a,m)=1;PGCD(c,m)=1\\
     % m multiple d'un nombre premier alors a-1 est multiple de ce nombre\\
     % a-1 est multiple de 4 si m est multiple de 4 }
-    \only<5>{
-    IBM $X_{n+1} =65539 X_{n} [2^{31}]$\\
-    Turbo Pascal $X_{n+1} =(129 X_{n} + 907633385)[2^{32}]$\\
-    Unix $X_{n+1} =(1103515245 X_{n}+12345) [2^{31}]$}
+    \only<5>{\hspace{-1em}\small
+    \begin{tabular}{rl}
+      IBM& $X_{n+1} \leftarrow (65539 X_{n}) \mod 2^{31}$\\
+      Turbo Pascal& $X_{n+1} \leftarrow (129 X_{n} + 907633385) \mod 2^{32}$\\
+      Unix& $X_{n+1} \leftarrow (1103515245 X_{n}+12345) \mod 2^{31}$
+    \end{tabular}
+}
   \end{minipage}
-
 \end{frame}
-\subsection{Séquence aléatoire? (tests)}
-\begin{frame}{LCG: Séquence aléatoire?}
+\subsection{Suite aléatoire? (tests)}
+\begin{frame}{LCG: Suite aléatoire?}
   Exemples de tests spectraux pour 100 nombres successifs
     \begin{figure}
       \begin{center}
@@ -199,39 +213,41 @@
       \includegraphics[scale=0.4]{img/a51m101.png}
       \end{center}
     \end{figure}
-    discrépance : mesure de l'homogénéité et du recouvrement\par
-    faible $\rightarrow$ couverture fine et homogène des nombres générés dans $[0,1]^2$
+    % discrépance : mesure de l'homogénéité et du recouvrement\par
+    % faible $\rightarrow$ couverture fine et homogène des nombres générés dans $[0,1]^2$
 \end{frame}
 
 \section{Vrai chaos déterministe}
 \minitoc
+\ignore{
 \begin{frame}
   \frametitle{Vrai chaos déterministe}
   \begin{itemize}
   \item générateurs basés sur la \textbf{théorie des nombres}
     \begin{itemize}
-    \item<2-> séquences périodiques
-    \item<3-> propriétés rendant la suite en partie prévisible : nombres générés dépendants de ceux qui les précédent 
+    \item suites périodiques
+    \item suites prévisibles
     \end{itemize}
   \item
 
-  \item<4->
+  \item<2->
     générateurs basés sur la \textbf{théorie du chaos}
     \begin{itemize}
-    \item<5-> séquences imprévisibles
-    \item<6-> ...mais peut-être périodiques!
+    \item suites imprévisibles
+    \item ...mais peut-être périodiques!
     \end{itemize}  
   \item
 
-  \item<7-> le générateur pseudo-aléatoire de Saito \&
+  \item<3-> le générateur pseudo-aléatoire de Saito \&
     Yamaguchi (2017) utilise les deux théories
   \end{itemize}   
 \end{frame}
+}
 \subsection{Décalage de Bernouilli}
 \begin{frame}
   \frametitle{Point de départ : décalage de Bernoulli}
   \begin{center}
-    {\LARGE $\alpha_{n+1}=(2\alpha_n)\ mod\ 1$\par}
+    {\LARGE $\alpha_{n+1} \leftarrow (2\alpha_n)\mod1$\par}
     \medskip
     définit une suite où $\alpha_n \in [0;1[$.
   \end{center}
@@ -241,12 +257,12 @@
   \medskip
   \onslide<3->
   \begin{itemize}
-  \item<3-> si $\alpha_0$ est \textbf{rationnel} $\Rightarrow$ séquence périodique, très prévisible \\
-  \item<4-> si $\alpha_0$ est \textbf{irrationnel} $\Rightarrow$ séquence  \textbf{non périodique}
+  \item<3-> si $\alpha_0$ est \textbf{rationnel} $\Rightarrow$ suite périodique, très prévisible \\
+  \item<4-> si $\alpha_0$ est \textbf{irrationnel} $\Rightarrow$ suite \textbf{non périodique}
   \end{itemize}
   \onslide<5->{
     \medskip
-    Variation infinitésimale de $\alpha_0 \longrightarrow$ changement radical de la séquence \\}
+    Variation infinitésimale de $\alpha_0 \Rightarrow$ changement radical de la suite \\}
   \onslide<6->{
     \begin{center}
       sensibilité aux conditions initiales :\\
@@ -312,13 +328,12 @@
       pour $\alpha_n$ ? \\
     \end{center}}
 \end{frame}
-\subsection{Racines polynomiales du $3^e$ degré}
+\subsection{Racines polynomiales de degré $3$}
 \begin{frame}
-  \frametitle{Racines polynomiales du $3^e$ degré}
-  Solution de Saito et Yamaguchi (2017)\\
-  \medskip
-  $\alpha_n$  racine unique d’un polynôme du 3e degré :  $f_n(\alpha_n) = 0$ \\
-  avec $f_n(x) = x^3+b_n x^2+c_n x+d_n$, et $\epsilon_n = (\alpha_n)$. \\
+  \frametitle{Racines polynomiales du degré 3}
+  Solution de Saito et Yamaguchi (2017)\par\medskip
+  $\alpha_n$  racine unique d’un polynôme du degré 3:  $f_n(\alpha_n) = 0$ \par
+  avec $f_n(x) = x^3+b_n x^2+c_n x+d_n$. \par
   \onslide<2->{
     \medskip
     \begin{tabular}{*{6}{c}}
@@ -328,8 +343,8 @@
     \end{tabular}}
   \onslide<3->{ 
     \par \medskip
-    Exemple : $f_0(x) = x^3+x-1$\\
-    \includegraphics[scale=0.75]{img/SaitoYamaguchi2017.png}\\ }
+    Exemple : $f_0(x) = x^3+x-1$\hfill{}$\epsilon_n = (\alpha_n)$\quad\phantom+\par
+    \includegraphics[scale=0.75]{img/SaitoYamaguchi2017.png}}
   \begin{center}
     \only<4>{\textbf{$\alpha_{n+1}=2 \alpha_n-\epsilon_n$ permet un calcul simple des coefficients de $f_{n+1}$} \\
       (opérations élémentaires)}
@@ -339,6 +354,7 @@
       complexité en $O(n)$}
   \end{center}
 \end{frame}
+\ignore{
 \subsection{Avantages/inconvénients de l'algorithme}
 \begin{frame}
   \frametitle{Qualité du résultat et utilité de l'algorithme}
@@ -354,7 +370,7 @@
     avec un bon choix de $f_0$ ( $c_0$ assez grand et $d_0\geqslant-(b_0+c_0)$ ) \\
     distribution presque uniforme
   \item<4->
-    bonne qualité $\rightarrow$ séquences de test statistiques 
+    bonne qualité $\rightarrow$ suites de test statistiques 
   \end{itemize} 
   \par \medskip
   \onslide<5>{
@@ -362,6 +378,7 @@
     \textit{Pseudorandom number generator based on the Bernoulli map on cubic algebraic integers}, 
     Asaki Saito \& Akihiro Yamaguchi, 2017.} 
 \end{frame}
+}
 
 \section{Générateurs de nombres ``vraiment'' aléatoires}
 \minitoc
@@ -375,6 +392,15 @@
  \item Pourquoi hasard inaccessible au processeur?
  \item Car le processeur est profondément déterministe
  \end{itemize}  
+\end{frame}
+\subsection{Algorithmes d'aggrégation et expansion d'entropie}
+\begin{frame}{Algorithmes d'aggrégation et expansion d'entropie}
+ \begin{itemize}
+ \item Algorithme pour grossir le flux de TRNG (pas assez rapide)
+ \item HAVEGE (utilisé par le noyau Linux)
+ \item HArdware Volatile Entropy Gathering and Expansion
+ \item https://www.irisa.fr/caps/projects/hipsor/misc.php
+ \end{itemize}
 \end{frame}
 \subsection{Généralités - Le Monde réel oui}
 \begin{frame}{Généralités - Le Monde réel oui}
@@ -405,15 +431,6 @@
     \end{itemize}
   \end{itemize}
 \end{frame}
-\subsection{Algorithmes d'aggrégation et expansion d'entropie}
-\begin{frame}{Algorithmes d'aggrégation et expansion d'entropie}
- \begin{itemize}
- \item Algorithme pour grossir le flux de TRNG (pas assez rapide)
- \item HAVEGE (utilisé par le noyau Linux)
- \item HArdware Volatile Entropy Gathering and Expansion
- \item https://www.irisa.fr/caps/projects/hipsor/misc.php
- \end{itemize}
-\end{frame}
 \subsection{Le futur est-il quantique?}
 \begin{frame}{Le futur est-il quantique?}
  \begin{itemize}
@@ -443,26 +460,27 @@
 \begin{frame}
   \frametitle{Que fait le module ``random'' de Python?}
   \begin{itemize}
-  \item Python fait appel à l'OS pour le TRNG.\par
-    \onslide<2->{L'OS implémente typiquement un algorithme HAVEGE.}
+  \item<2-> Python fait appel à l'OS pour le TRNG.\par
+    L'OS implémente typiquement un algorithme HAVEGE.
     \medskip
     \begin{itemize}
-    \item<3-> utilisé directement par \texttt{random.SystemRandom} ou par
+    \item utilisé directement par \texttt{random.SystemRandom} ou par
       \texttt{secrets}
       \par ce niveau d'aléatoire est nécessaire pour la cryptographie!
       \medskip
-    \item<4-> utilisé en tant que \textit{seed} par défaut pour le PRNG de \texttt{random}
+    \item utilisé en tant que \textit{seed} par défaut pour le PRNG de \texttt{random}
     \end{itemize}
     \bigskip
-  \item<5-> Python utilise le \textbf{Mersenne Twister} en tant PRNG
+  \item<3-> Python utilise le \textbf{Mersenne Twister} en tant PRNG
     \begin{itemize}
-    \item<6-> L'algorithme est plus complexe que ceux que nous avons présentés
+    \item L'algorithme est plus complexe que ceux que nous avons présentés
       \medskip
-    \item<7-> Il gère 624 nombres en parallèle, ce qui permet une période de
+    \item Il gère 624 nombres en parallèle, ce qui permet une période de
       $2^{19937}-1$, nettement plus que la limite naturelle de $2^{32}$.
     \end{itemize}
   \end{itemize}
 \end{frame}
+\ignore{
 \begin{frame}[containsverbatim]{Que fait le module ``random'' de Python?}
   Le module \texttt{random} fournit des fonctions transformant directement ces
   nombres pour émuler des distributions aléatoires usuelles, le tirage sans
@@ -482,6 +500,8 @@ x = random.uniform(0, 10)
 l = random.sample(["a", "b", "c", "d", "e"], 2)
 \end{lstlisting}
 \end{frame}
+}
+\ignore{
 \subsection{Est-ce que ça marche?}
 \begin{frame}{Est-ce que ça marche?}
   Tirages aléatoires avec \texttt{random.uniform(0, 1)} à partir d'une même
@@ -492,10 +512,11 @@ l = random.sample(["a", "b", "c", "d", "e"], 2)
   \end{center}
   code source: dossier \texttt{Code} dans \url{github.com/dalker/ASD2_RNG/}
 \end{frame}
-
+}
 \begin{frame}{FIN}
   \begin{center}
-    \includegraphics[width=.7\textwidth]{img/dilbert_evil.png}
+    %\includegraphics[width=.7\textwidth]{img/dilbert_evil.png}
+    \includegraphics[width=.35\textwidth]{img/xkcd_sports.png}
   \end{center}
 \end{frame}
 
