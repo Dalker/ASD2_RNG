@@ -153,11 +153,11 @@ aléatoire demeure tout autant vraie. A contrario, lorsque des nombres aléatoir
 sont employés pour la cryptographie, on veut éviter le plus possible la
 reproductibilité. Dans ce dernier cas, on préfère autant que possible recourir
 exclusivement à la génération de ``vrais'' nombres aléatoires (True Random
-Number Generators, section \ref{s:TRNG}). Cependant, ceux-ci sont coûteux en
-temps. C'est pourquoi dans tous les autres cas, on utilisera des méthodes
-arithmétiques pseudo-aléatoires (Pseudo-Random Number Generators) produisant de
-manière déterministe une suite de nombres uniformément distribués (section
-\ref{s:PRNG}).
+Number Generators ou TRNG, section \ref{s:TRNG}). Cependant, ceux-ci sont
+coûteux en temps. C'est pourquoi dans tous les autres cas, on utilisera des
+méthodes arithmétiques pseudo-aléatoires (Pseudo-Random Number Generators ou
+PRNG) produisant de manière déterministe une suite de nombres uniformément
+distribués (section \ref{s:PRNG}).
 \par\medskip
 
 Finalement, Von Neumann nous met en garde sur le fait que dans les méthodes
@@ -170,7 +170,23 @@ cet écueil.
 
 \section{Générateurs de suites pseudo-aléatoires}\label{s:PRNG}
 
+\subsection{Exemple ``naïf''}
+Une méthode utilisée au début des années 1950 consistait simplement à prendre le
+carré d'un nombre et le tronquer, comme dans l'exemple suivant:
+\[
+  30472901 \overset{\text{carré}}\longrightarrow {\color{blue}0928}59769535{\color{blue}5801}
+  \overset{\text{tronqué}}\longrightarrow 59769535
+\]
+
+Avec, dans l'exemple, un nombre à 8 chiffres au départ, on arrive à un nombre à
+16 chiffres après élever au carré (peut-être avec un 0 initial), mais on ne
+garde que les 8 chiffres du milieu. On peut bien sûr faire exactement la même
+chose avec des nombres en écriture binaire avec par exemple 32 bits au début et
+à la fin et 64 à l'étape intermédiaire.
+
 \subsection{Caractéristiques communes}
+En gardant dans la tête l'exemple précédent, on peut déjà dégager des
+caractéristiques importantes des PRNG.
 \subsubsection{la \textit{seed}}
 Les suites de nombres pseudo-aléatoires fournissent une manière déterministe de
 passer d'un nombre à un autre, sans histoire (seul le nombre précédent est pris
@@ -185,8 +201,74 @@ itérations on retombera sur la ``seed'' choisie au départ. Dans l'idéal, on n
 voudrait pas y retomber avant. Une bonne méthode de génération de nombres
 pseudo-aléatoires devra donc garantis une période longue.
 
-\subsection{Générateurs linéaires congruents (LCG)}
-\ldots (à remplir par JFR)
+\subsection{Les générateurs linéaires congruents (LCG)}
+Le générateur à congruence linéaire est un générateur de nombres aléatoires qui
+a été mis au point en 1949 par Derrick Lehmer. Elle est basée sur une fonction
+linéaire et l'arithmétique modulaire. Cela en fait une méthode déterministe dont
+la période dépend dans une large part de ses paramètres.  Le caractère
+déterministe a pour intérêt la reproductibilité des résultats permettant d'une
+part la recherche d'erreur dans les codes et d'autre part comme référence pour
+des résultats scientifiques.  Une suite $(X_n)$ de nombres est produite par
+itération à partir d'une graine: $X_{n+1} = (a X_n +c)[m]$ Où $[m]$ est le
+module $m$, $a$ le multiplicateur, $c$ l'incrément et $X_0$ la graine.
+
+La division entière dans la formule permet d'obtenir le reste de la division
+entière. Ainsi, à partir de la graine, chaque nombre peut être un entier entre 0
+et $m-1$.  Par conséquent, dans le meilleur des cas, $m$ nombres sont produits
+et la suite se répète.  Un enjeu est donc de choisir un module suffisamment
+grand de sorte d'avoir une suite de nombres longue.
+
+\subsection{Choix des paramètres}
+La conjugaison des paramètres $a$, $c$ et $m$ est donc décisive dans le
+caractère aléatoire de la suite générée. Ceci est illustré sur des exemples
+simples:
+
+1er cas:\par
+$X_{n+1} = (3 X_n +2)[5]$ avec $X_0 = 1$ donne pour suite $[1,0,2,3,1,..]$ et la
+période est de 4.  2ème cas:\par
+$X_{n+1} = (4 X_n +2)[9]$ avec $X_0 = 4$ donnant $[4,0,2,1,6,8,7,3,5,4]$ avec
+une période de 9 qui est maximale.  Ainsi, le choix des paramètres obéit à des
+critères qui rendent maximale la période dénommés usuellement "magic numbers".
+D'autre part, on a pu remarque dans le premier cas que le nombre 4 est absent de
+la liste. S'il avait été donné comme graine, la période aurait été de 1 avec
+uniquement pour sortie la valeur 4.
+
+En conclusion, la combinaison de paramètres permet une grande variété de
+résultats mais ne doit pas occulter l'importance de la graine pour obtenir des
+nombres les plus aléatoires possibles.
+
+\subsection{Des générateurs à congruence linéaire types}
+Il existe un spectre important de générateurs utilisés dans tous les
+langages. Citons en particulier les cas suivants: Fonction RANDU d'IBM :
+$X_{n+1} =65539 X_{n} [2^{31}]$\par
+Turbo Pascal : $X_{n+1} =(129 X_{n} + 907633385)[2^{32}]$\par
+Fonction \texttt{rand()} (C ANSI) :
+$X_{n+1} =(1103515245 X_{n}+12345) [2^{31}]$\par
+où le module est de l'ordre de 32 bits à la limite maximale des ordinateurs
+utilisés.
+
+\subsection{Tests de validité}
+Afin de tester la validité des du générateur on peut effectuer un \textit{ test
+  spectral}. Celui-ci permet d'observer directement la corrélation de la suite
+de nombres.  Il s'agit de représenter les nombres les uns en fonction des autres
+dans un espace multidimensionnel de façon à identifier les redondances.  Le
+générateur $X_{n+1} =(7 X_{n})[101]$ donnent un histogramme des 101 premiers
+nombres avec la graine $X_0 = 1$ sur la figure ci-dessous à gauche:
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.4]{img/histo7Xn[101].png}
+    \hspace{0.1\textwidth}
+    \includegraphics[scale=0.4]{img/a7m101.png}
+  \end{center}
+\end{figure}
+Cet histogramme montre la présence de toutes les valeurs possibles sans période
+inférieure à la valeur du module.  Afin de mettre en évidence les corrélations,
+on trace les 101 premières paires consécutives de nombres
+($X_n/m$,$X_{n+1}/m$). Chaque nombre est normalisé par le module permettant de
+visualiser dans l'espace $[0,1]^2$.  Sur la figure de droite, on y constate le
+recouvrement des valeurs entre 0 et 1. Le caractère déterministe apparaît avec
+les points à distance régulière suivent des droites. De plus, plus cette
+distance est faible plus le recouvrement est important.
 
 \subsection{Mersenne Twister et les LFSR}\label{s:MT}
 La méthode la plus employée de nos jours est en fait le \textbf{Mersenne

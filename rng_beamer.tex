@@ -3,6 +3,7 @@
 % importations de packages utiles
 \usepackage[utf8]{inputenc}  % pouvoir écrire avec des accents
 \usepackage[french]{babel}  % francophopnie
+\usepackage{amsmath}
 \usepackage{hyperref}  % liens clicables dans pdf final
 \usepackage{tikz}  % pouvoir tracer des dessins sympas
 \usetheme{Boadilla}  % thème de beamer
@@ -104,16 +105,25 @@
   \minitoc
 }
 \subsection{Caractéristiques communes des PRNG}
-\begin{frame}
-  \frametitle{Générateurs de nombres pseudo-aléatoires}
+\begin{frame}{Générateurs de nombres pseudo-aléatoires}
+  \only<1->{
+    Exemple de générateur heuristique ``naïf'' (utilisé aux années 1950):
+
+    \[30472901 \overset{\text{carré}}\longrightarrow
+      {\color<2->{blue}0928}59769535{\color<2->{blue}5801}
+      \onslide<3->{\overset{\text{tronqué}}\longrightarrow 59769535}\]
+    
+  }
+  \onslide<4->{
   Les Pseudo Random Number Generators (PRNG) génèrent:
   \begin{itemize}
   \item une \textbf{suite} de nombres de manière \textbf{déterministe} (et
     ``sans histoire'')
-  \item<2-> à partir d'une \textbf{seed} (nombre initial)
-  \item<3-> avec une certaine \textbf{période}\par
+  \item<5-> à partir d'une \textbf{seed} (nombre initial)
+  \item<6-> avec une certaine \textbf{période}\par
     (a priori limitée à $2^{32}$ pour des nombres à 32 bits, par exemple)
   \end{itemize}
+  }
 \end{frame}
 
 \ignore{
