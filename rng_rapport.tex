@@ -5,7 +5,7 @@
 \addbibresource{rng.bib}
 \usepackage[utf8]{inputenc}  % pouvoir écrire avec des accents
 \usepackage[french]{babel}  % francophopnie
-\usepackage{amsmath, amssymb}
+\usepackage{amsmath, amssymb, bm}
 \usepackage{hyperref}  % liens clicables dans pdf final
 \usepackage{tikz}  % pouvoir tracer des dessins sympas
 \usepackage{listingsutf8}  % rendu de "code" (avec config ci-dessous)
@@ -255,7 +255,7 @@ C ANSI : $X_{n+1} =(1103515245 X_{n}+12345)\, mod\, 2^{31}$\\
 Le module est de l'ordre de 32 bits à la limite maximale des ordinateurs
 utilisés.
 
-\subsubsection{Tests de validité}
+\subsubsection{Tests de validité}\label{ss:spectral}
 Afin de s'assurer de la validité d'un générateur de nombres pseudo-aléatoires,
 on peut effectuer un \textit{ test spectral} (considéré comme l'un des plus
 discriminants). Celui-ci permet d'observer directement la corrélation de la
@@ -590,6 +590,52 @@ predictibilité à l'intérieur même des séquences.  La méthode de Saito-Yama
 en revanche se rapproche nettement plus des résultats obtenus à partir du TRNG
 classique du système d'exploitation. Nous n'avons pas pu effectuer des tests
 avec un TRNG quantique, qui serait bien sûr l'étalon idéal.
+
+Finalement, en réponse aux ``tests spectraux'' mentionnés dans la section
+\ref{ss:spectral}, nous présentons de manière d'abord visuelle et ensuite
+calculée des éventuelles corrélations entre une valeur et la suivante pour les
+mêmes générateurs que ci-dessus.
+\begin{center}
+  \includegraphics[width=\textwidth]{img/correlations8000.png}
+\end{center}
+
+Il est facile de calculer les corrélations entre les $N-1$ premiers et $N-1$
+derniers nombres générés (donc entre la suite des nombres et la suite décalée
+d'un cran) afin de voir à quel point une relation entre un nombre et le suivant
+est décelable, en faisant appel à la formule de corrélation linéaire classique
+entre deux séries de donnée $x$ et $y$:
+\[ c = \frac{\bm x\boldsymbol\cdot \bm y}{\|\bm x\|\cdot\|\bm y\|} \]
+où $\bm x$ et $\bm y$ sont des vecteurs constitués des données.
+On peut facilement tester aussi quelques corrélations non-linéaires simples en
+remplaçant les valeurs $x$ et/ou $y$ par leurs logarithmes.
+
+Nous ne nous intéressons qu'à la valeur absolue des corrélations, le but étant
+de voir si elles sont suffisamment proches de 0 (une corrélation absolue est
+toujours entre 0 et 1, avec 1 signifiant \textit{parfaitement corrélé}, soit
+réellement une relation linéaire, exponentielle, etc. entre une donnée et la
+suivante).
+\begin{center}
+  \begin{tabular}{lcccc}
+    type de corrélation & linéaire & exponentielle & logarithmique & puissance\\
+    changements de de variable & lin-lin & lin-log & log-lin & log-log\\
+    \hline
+    méthode des carrés de Von Neumann&0.006&  0.009& 0.022&  0.025 \\
+    LCG avec mauvais paramètres&  0.200&  0.244&  0.155&  0.226\\
+    LCG avec paramètres RANDU/IBM&  0.022&  0.020&  0.025&  0.017\\
+    Mersenne Twister& 0.006&  0.006&  0.007&  0.006\\
+    HAVEGE via l'OS&  0.007&  0.013&  0.007&  0.013\\
+    Saito-Yamagotchi& 0.005&  0.003&  0.000&  0.006
+  \end{tabular}
+\end{center}
+
+Cette fois-ci, par contre, à part le LCG avec ``mauvais paramètres'' qui a
+évidemment des corrélations trop grandes, nous pouvons voir que le LCG avec des
+``bons paramètres'' présente des corrélations trop grandes, tout autant que la
+méthode ``naïve'' avec la suite de carrés tronqués. Cela explique certainement
+pourquoi les langages de programmation dans leurs versions les plus modernes
+ont peu à peu abandonné les LCG en faveur du Mersenne Twister. Le gain avec
+l'algorithme de Saito-Yamagotchi semble réel mais trop faible pour justifier le
+surcoût énorme en mémoire nécessaire à son utilisation. 
 
 Pour le code source de tous les tests qui précédent, voir le dossier
 \texttt{Code} dans \url{https://github.com/dalker/ASD2_RNG/} (lien clicable dans

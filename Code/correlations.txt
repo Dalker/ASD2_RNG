@@ -1,0 +1,15 @@
+Résultats de calcul de corrélation pour N=8000
+----------------------------------------------
+
+* corrélations pour VonNeumann :
+  lin-lin 0.006, lin-log 0.009, log-lin 0.022, log-log 0.025
+* corrélations pour LCG a=3 mod 7 :
+  lin-lin 0.200, lin-log 0.244, log-lin 0.155, log-log 0.226
+* corrélations pour LCG RANDU(IBM) :
+  lin-lin 0.022, lin-log 0.020, log-lin 0.025, log-log 0.017
+* corrélations pour Mersenne Twister :
+  lin-lin 0.006, lin-log 0.006, log-lin 0.007, log-log 0.006
+* corrélations pour RNG de l'OS :
+  lin-lin 0.007, lin-log 0.013, log-lin 0.007, log-log 0.013
+* corrélations pour Saito-Yamaguchi :
+  lin-lin 0.005, lin-log 0.003, log-lin 0.000, log-log 0.006

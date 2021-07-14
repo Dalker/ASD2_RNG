@@ -514,7 +514,7 @@ l = random.sample(["a", "b", "c", "d", "e"], 2)
 \subsection{Est-ce que ça marche?}
 \begin{frame}{Est-ce que ça marche?}
   Tirage de 8000 nombres avec différents générateurs:
-  %\vspace{-3ex}
+  \vspace{-2ex}
   \begin{center}
     \begin{tikzpicture}
       % gestion d'étiquettage d'images selon la source suivante:
@@ -542,6 +542,10 @@ l = random.sample(["a", "b", "c", "d", "e"], 2)
       \end{scope}
     \end{tikzpicture}
   \end{center}
+  \vspace{-4ex}
+  \onslide<3->{La \textbf{corrélation} en revanche montre\par
+    Mersenne Twister, Saito-Yamagotchi, HAVEGE > LCG (cf. rapport)}
+  \par\medskip
   code source: dossier \texttt{Code} dans \url{github.com/dalker/ASD2_RNG/}
 \end{frame}
 \ignore{
