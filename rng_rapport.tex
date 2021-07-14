@@ -304,9 +304,9 @@ pseudo-aléatoires. Il est pour l'instant moins courant mais plus efficace que
 le Mersenne Twister.\footnote{https://en.wikipedia.org/wiki/Xorshift}
 
 \subsection{Vrai chaos déterministe}
-\subsubsection{Pseudo-aléatoire avec suites chaotiques?x}
+\subsubsection{Pseudo-aléatoire avec suites chaotiques?}
 Le problème des générateurs basés sur la théorie des nombres, c’est qu’ils
-produisent des séquences périodiques, qui possèdent des propriétés qui rend la
+produisent des séquences périodiques, qui possèdent des propriétés qui rendent la
 suite en partie prévisible, parce que les nombres générés sont dépendants de
 ceux qui les précèdent, ce qui ne se produit jamais dans une vraie suite
 aléatoire ! \par
@@ -550,7 +550,7 @@ générateur suivants:
 \begin{enumerate}
 \item Générateur avec la méthode des carrés mentionnée par Von Neumann
   (cf. section \ref{ss:carres}) avec une \textit{seed} de $36000000$
-  (expérimentallement, celle-ci doit être de l'ordre de grandeur de
+  (expérimentalement, celle-ci doit être de l'ordre de grandeur de
   $2^{30}-2^{31}$ pour que cela se passe en travaillant à 32 bits (64 bits pour
   l'étape intermériaire du carré avant d'extraire les bits centraux).
 \item Générateur linéaire congruent modulo 7 avec $a=3$ et $c=0$, avec /seed/ $2021$.
