@@ -391,8 +391,10 @@
 \frametitle{Quel est le problème?}
  \begin{itemize}
  \item Les algorithmes PRNG sont efficaces MAIS...
- \item<2-> Ils dépendent d'une graine
- \item<3-> Ils sont déterministes
+   \begin{itemize}
+   \item<2-> Ils dépendent d'une graine
+   \item<3-> Ils sont déterministes
+   \end{itemize}
  \end{itemize}
 \onslide<4>{
 \par
@@ -441,10 +443,10 @@ Comment générer une graine vraiment aléatoire?
 \begin{frame}
 \frametitle{Principe du QRNG chez ID Quantique}
 \par
-\onslide<2> {Diode LASER émet un photon.}
-\onslide<3> {qui arrive sur paroi semi-réfléchissante.}
-\onslide<4> {Détecteur "0" si le photon est réfléchi}
-\onslide<5> {Détecteur "1" si le photon est traverse}
+\onslide<2-> {Diode LASER émet un photon}
+\onslide<3-> {qui arrive sur paroi semi-réfléchissante.}
+\only<4> {Détecteur ``0'' si le photon est réfléchi}
+\only<5> {Détecteur ``1'' si le photon est traverse}
 \par
 \begin{center}
   \includegraphics[scale=0.25]{img/Figure1.OpticalSystemUsedTuGenerateRandomNumbers.jpg}  
@@ -462,7 +464,7 @@ Comment générer une graine vraiment aléatoire?
  \end{itemize}
 \end{frame}
 
-\section{RNG dans Python}
+\section{Aspects pratiques}
 \minitoc
 \subsection{Que fait le module \textit{random} de Python?}
 \begin{frame}

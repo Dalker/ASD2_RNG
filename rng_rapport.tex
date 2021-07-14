@@ -39,8 +39,9 @@
 
 \tableofcontents
 
-\section{Introduction}
+\section{Introduction}\label{s:intro}
 
+\subsection{Distributions aléatoires}
 Un générateur de nombres aléatoires (random number generator - RNG) est sensé
 produire une suite de nombres respectant une certaine distribution probabiliste,
 qui peut être discrète (figure \ref{fig:discdistr}) ou continue (figure 2).
@@ -110,6 +111,7 @@ qui peut être discrète (figure \ref{fig:discdistr}) ou continue (figure 2).
   \label{fig:contdistr}
 \end{figure}
 
+\subsection{État des lieux à l'époque de Von Neumann}\label{ss:vonneumann}
 Dans un article datant des années 1950, Von Neumann\cite{VonNeumann} pose les
 deux questions fondamentales concernant la génération de nombres aléatoires:
 \begin{enumerate}
@@ -129,8 +131,6 @@ distribution cumulée correspondante $c:x\mapsto\int_{-\infty}^xf(\xi)d\xi$ est
 bijective de $I$ vers l'intervalle $[0,1]$. Son inverse $c^{(-1)}$ permettra
 donc de retrouver des valeurs de $x$ distribuées selon $f$. Des méthodes plus
 efficaces existent pour des distributions particulières.\par\medskip
-
-
 
 Pour la première question, deux approches sont possibles: partir d'un processus
 physique, ou bien utiliser une méthode arithmétique. Von Neumann considère que
@@ -170,9 +170,10 @@ cet écueil.
 
 \section{Générateurs de suites pseudo-aléatoires}\label{s:PRNG}
 
-\subsection{Exemple ``naïf''}
-Une méthode utilisée au début des années 1950 consistait simplement à prendre le
-carré d'un nombre et le tronquer, comme dans l'exemple suivant:
+\subsection{Exemple ``naïf''}\label{ss:carres}
+Une méthode utilisée au début des années 1950, à l'époque de Von Neumann
+(cf. section \ref{ss:vonneumann} consistait simplement à prendre le carré d'un
+nombre et le tronquer, comme dans l'exemple suivant:
 \[
   30472901 \overset{\text{carré}}\longrightarrow {\color{blue}0928}59769535{\color{blue}5801}
   \overset{\text{tronqué}}\longrightarrow 59769535
@@ -187,7 +188,7 @@ chose avec des nombres en écriture binaire avec par exemple 32 bits au début e
 \subsection{Caractéristiques communes}
 En gardant dans la tête l'exemple précédent, on peut déjà dégager des
 caractéristiques importantes des PRNG.
-\subsubsection{la \textit{seed}}
+\subsubsection{la graine ou \textit{seed}}
 Les suites de nombres pseudo-aléatoires fournissent une manière déterministe de
 passer d'un nombre à un autre, sans histoire (seul le nombre précédent est pris
 en compte). Cependant, il faut démarrer la suite avec un premier nombre: la
@@ -201,7 +202,7 @@ itérations on retombera sur la ``seed'' choisie au départ. Dans l'idéal, on n
 voudrait pas y retomber avant. Une bonne méthode de génération de nombres
 pseudo-aléatoires devra donc garantis une période longue.
 
-\subsection{Les générateurs linéaires congruents (LCG)}
+\subsection{Les générateurs linéaires congruents (LCG)}\label{s:lcg}
 Le générateur à congruence linéaire est un générateur de nombres aléatoires qui
 a été mis au point en 1949 par Derrick Lehmer. Elle est basée sur une fonction
 linéaire et l'arithmétique modulaire. Cela en fait une méthode déterministe dont
@@ -218,7 +219,7 @@ et $m-1$.  Par conséquent, dans le meilleur des cas, $m$ nombres sont produits
 et la suite se répète.  Un enjeu est donc de choisir un module suffisamment
 grand de sorte d'avoir une suite de nombres longue.
 
-\subsection{Choix des paramètres}
+\subsubsection{Choix des paramètres}
 La conjugaison des paramètres $a$, $c$ et $m$ est donc décisive dans le
 caractère aléatoire de la suite générée. Ceci est illustré sur des exemples
 simples:
@@ -237,7 +238,7 @@ En conclusion, la combinaison de paramètres permet une grande variété de
 résultats mais ne doit pas occulter l'importance de la graine pour obtenir des
 nombres les plus aléatoires possibles.
 
-\subsection{Des générateurs à congruence linéaire types}
+\subsubsection{Des générateurs à congruence linéaire types}\ref{ss:randu}
 Il existe un spectre important de générateurs utilisés dans tous les
 langages. Citons en particulier les cas suivants: Fonction RANDU d'IBM :
 $X_{n+1} =65539 X_{n} [2^{31}]$\par
@@ -247,7 +248,7 @@ $X_{n+1} =(1103515245 X_{n}+12345) [2^{31}]$\par
 où le module est de l'ordre de 32 bits à la limite maximale des ordinateurs
 utilisés.
 
-\subsection{Tests de validité}
+\subsubsection{Tests de validité}
 Afin de tester la validité des du générateur on peut effectuer un \textit{ test
   spectral}. Celui-ci permet d'observer directement la corrélation de la suite
 de nombres.  Il s'agit de représenter les nombres les uns en fonction des autres
@@ -382,7 +383,7 @@ croissante. Cela demandera un temps de calcul de plus en plus important, et ne
 ne sera plus possible pour de très grandes valeurs de $n$. \par
 Il faut pouvoir gérer des valeurs exactes pour $\alpha_n$!
 
-\subsubsection{Racines irrationnelles du 3e degré}
+\subsubsection{Racines irrationnelles du 3e degré}\label{ss:saito}
 Saito et Yamaguchi \cite{SY} proposent une solution à ce problème: en
 choisissant $\alpha_0$ comme racine d’un polynôme du 3e degré $f_0$ dont les
 coefficients sont entiers, et qui a une unique racine réelle. \par
@@ -417,11 +418,19 @@ uniformément distribuée sur l’intervalle [0;1]. \par
 Les algorithmes qu'on a vus permettent de générer des suites de nombres pseudo aléatoires, c'est à dire qu'on ne peut pas distinguer d'une suite réellement aléatoire. Ceci dit, il y a un gros problème avec ces algorithmes: ils sont tous déterministes et cela entraîne la nécessité de trouver une graine imprévisible car si on peut deviner la graine, on découvre toute la suite de nombres aléatoires générée!\par
 Comment générer cette bonne graine?
 
-\subsection{Source d'entropie interne}
-Une source de hasard peut être trouvée au coeur de l'ordinateur. Il existe en effet des algorithmes qui combinent de nombreuses sources d'entropie dans l’état interne de l’ordinateur pour en tirer un résultat proche du vrai aléatoire. \par
-On peut citer, par exemple, HAVEGE (HArdware Volatile Entropy Gathering and Expansion) qui est implémenté dans le noyau Linux pour créer des graines utilisables par les algorithmes PRNG.\par
-HAVEGE combine des milliers de paramètres de l’état interne (horloge, registres du CPU, mémoire cache, branch predictor, mouvements de souris, etc) puis en tire un nombre qui est très proche d'un vrai aléatoire; il est en tous cas impossible à deviner car il dépend de trop nombreux paramètres qu’un hackeur ne pourrait pas geler ou découvrir en temps réel.
-Pour plus de détails: voir \href{https://www.irisa.fr/caps/projects/hipsor/misc.php}{ici}.
+\subsection{Source d'entropie interne}\label{ss:havege}
+Une source de hasard peut être trouvée au coeur de l'ordinateur. Il existe en
+effet des algorithmes qui combinent de nombreuses sources d'entropie dans l’état
+interne de l’ordinateur pour en tirer un résultat proche du vrai aléatoire. \par
+On peut citer, par exemple, HAVEGE (HArdware Volatile Entropy Gathering and
+Expansion) qui est implémenté dans le noyau Linux pour créer des graines
+utilisables par les algorithmes PRNG.\par
+HAVEGE combine des milliers de paramètres de l’état interne (horloge, registres
+du CPU, mémoire cache, branch predictor, mouvements de souris, etc) puis en tire
+un nombre qui est très proche d'un vrai aléatoire; il est en tous cas impossible
+à deviner car il dépend de trop nombreux paramètres qu’un hackeur ne pourrait
+pas geler ou découvrir en temps réel.  Pour plus de détails: voir
+\href{https://www.irisa.fr/caps/projects/hipsor/misc.php}{ici}.
 
 \subsection{Source d'entropie externe}
 On l'a dit, l'ordinateur est incapable de produire du hasard pur. Par contre, le monde physique, lui, regorge d'entropie: on est toujours embêté par l’incertitude des mesures et par le fait qu’on ne peut pas contrôler une grandeur physique avec une précision arbitraire. \par
@@ -473,9 +482,10 @@ Le principe du QRNG chez ID Quantique est le suivant:
 Ce processus est fondamentalement imprédictible car au moment où le photon sort de la diode LASER, il n’a aucune caractéristique qui le prédétermine à être plutôt transmis que réfléchi ou l’inverse. En effet, tous les photons sont exactement dans le même état quantique à la sortie d'un LASER. Même au moment où il atteint le miroir, on ne sait toujours pas s’il a traversé ou s’il a été réfléchi car les deux phénomènes se produisent en réalité en parallèle. Ce n’est qu’au moment d’être effectivement détecté dans un des deux chemins que le paquet d’onde est réduit et que le photon devient une “particule réfléchie” ou une “particule transmise”. Impossible donc de recueillir des données innombrables sur l’état interne pour déduire de possibles résultats (comme ce pourrait être envisagé dans un TRNG classique)!
 
 
-\section{Que fait le module ``random'' de Python?}
+\section{Utiliser un RNG dans ses programmes en Python}
+\subsection{Que fait le module ``random'' de Python?}\label{ss:python}
 Python fait appel à l'OS pour générer des ``vrais'' nombres aléatoires.
-Celui-ci implémente typiquement un algorithme HAVEGE.
+Celui-ci implémente typiquement un algorithme HAVEGE (cf. section \ref{ss:havege}).
 On peut y accéder directement à travers la classe \texttt{random.SystemRandom} ou par
 le module dédié  \texttt{secrets}, qui, comme son nom l'indique, a pour but de
 fournir des nombres suffisamment aléatoires pour la cryptographie.
@@ -504,20 +514,74 @@ d'une sous-collection aléatoire d'une collection donnée.
   l = random.sample(["a", "b", "c", "d", "e"], 2)
 \end{lstlisting}
 
+\subsection{Tests comparatifs de différents RNGs}
 Un simple test avec des tirages aléatoires en utilisant
 \texttt{random.uniform(0, 1)} à partir d'une même seed avec des nombre de
 tirages cumulés différents permet d'observer graphiquement comment on se
 rapproche d'une distribution uniforme au fur et à mesure que l'on augmente le
-nombre de tirages.
+nombre de tirages. La figure ci-dessous montre la répartition des nombres dans
+les dixièmes de l'intervalle total (l'histogramme est normalisé de manière à
+donner une aire totale de 1).
 \begin{center}
   \includegraphics[width=0.8\textwidth]{img/uniformes.png}\par
-  (pour le code source: voir le dossier \texttt{Code} dans
-  \url{github.com/dalker/ASD2_RNG/})
 \end{center}
-Nous n'avons pas fait de tests statistiques plus poussés là-dessus, mais il
-pourrait être intéressant de vérifier par exemple jusqu'à quel point la fonction
-\texttt{random.gaussian()} fournit une distribution proche de la distribution
-normale.
+
+A contrario, en gardant le nombre de tirages constant (à $N=8000$) mais en
+changeant de générateur aléatoire, nous pouvons observer leur efficacité
+relative.
+
+Ci-dessous, nous pouvons observer les histogrammes résultants pour les choix de
+générateur suivants:
+\begin{enumerate}
+\item Générateur avec la méthode des carrés mentionnée par Von Neumann
+  (cf. section \ref{ss:carres}) avec une \textit{seed} de $36000000$
+  (expérimentallement, celle-ci doit être de l'ordre de grandeur de
+  $2^{30}-2^{31}$ pour que cela se passe en travaillant à 32 bits (64 bits pour
+  l'étape intermériaire du carré avant d'extraire les bits centraux).
+\item Générateur linéaire congruent modulo 7 avec $a=3$ et $c=0$, avec /seed/ $2021$.
+\item Générateur linéaire congruent avec les paramètres de RANDU (cf. section
+  \label{ss:randu}), avec /seed/ $2021$
+\item Mersenne Twister (cf. section \ref{s:MT}) du module \texttt{random} de la librairie standard de
+  python, avec /seed/ $2021$
+\item RNG du système d'exploitation (\texttt{/dev/urandom} de Linux dans ces
+  tests), tel qu'appelé par la classe \texttt{random.SystemRandom} du module
+  \texttt{random} (pas de /seed/ - c'est du TRNG, au moins du point de vue du
+  programme, tel que décrit dans la section \ref{ss:python}).
+\item algorithme de Saito-Yamagotchi avec les paramètres présentés dans
+  l'exemple de la section \ref{ss:saito}
+\end{enumerate}
+
+\begin{center}
+  \includegraphics[width=\textwidth]{img/rng8000b.png}
+\end{center}
+À part pour le cas délibérément ``mauvais'' d'un générateur
+à congruence linéaire avec des mauvais paramètres, le regard visuel ne suffit
+pas. Cependant, nous pouvons améliorer l'analyse en effectuant des tests du
+$\chi²$ pour la répartition dans les mêmes sous-intervalles, avec les résultats
+suivants:
+\begin{center}
+  \begin{tabular}{rr}
+ méthode des carrés de Von Neumann& {$\chi^2 = 8.4$}\\
+ LCG avec mauvais paramètres& {$\chi^2 = 5333$}\\
+ LCG avec paramètres RANDU/IBM& {$\chi^2 = 8.8$}\\
+ Mersenne Twister& {$\chi^2 = 8.9$}\\
+ HAVEGE via l'OS& {$\chi^2 = 4.4$}\\
+ Saito-Yamagotchi& {$\chi^2 = 5.9$}
+\end{enumerate}  
+\end{center}
+
+Nous constatons qu'avec un choix raisonnable de /seed/, il n'y a pas de
+différence statistique substantielle entre la méthode ``naïve'' des carrés, un
+générateur linéaire congruent et le Mersenne Twister, tous trois a priori utiles
+comme départ d'algorithmes probabilistes ne se préoccupant pas du niveau de
+predictibilité à l'intérieur même des séquences.  La méthode de Saito-Yamagotchi
+en revanche se rapproche nettement plus des résultats obtenus à partir du TRNG
+classique du système d'exploitation. Nous n'avons pas pu effectuer des tests
+avec un TRNG quantique, qui serait bien sûr l'étalon idéal.
+
+Pour le code source de tous les tests qui précédent, voir le dossier
+\texttt{Code} dans \url{https://github.com/dalker/ASD2_RNG/} (lien clicable dans
+la version pdf).
 
 \section{Conclusion}
 Le sujet de la génération de nombres aléatoires par un ordinateur s'est avéré
