@@ -186,20 +186,21 @@ chose avec des nombres en écriture binaire avec par exemple 32 bits au début e
 à la fin et 64 à l'étape intermédiaire.
 
 \subsection{Caractéristiques communes}
-En gardant dans la tête l'exemple précédent, on peut déjà dégager des
+En gardant en tête l'exemple précédent, on peut déjà dégager des
 caractéristiques importantes des PRNG.
 \subsubsection{la graine ou \textit{seed}}
 Les suites de nombres pseudo-aléatoires fournissent une manière déterministe de
 passer d'un nombre à un autre, sans histoire (seul le nombre précédent est pris
 en compte). Cependant, il faut démarrer la suite avec un premier nombre: la
 \textit{seed}. Celle-ci pourra être obtenue par une méthode de ``vrai'' hasard
-(cf. section \ref{s:TRNG}) ou bien être imposée de manière à pouvoir reporduire
+(cf. section \ref{s:TRNG}) ou bien être imposée de manière à pouvoir reproduire
 une séquence pseudo-aléatoire donnée, par exemple à des fins de tests.
 \subsubsection{la période}
 Toutes les séquences pseudo-aléatoires sont en fait périodiques. Si par exemple
 on produit des nombres constitués de 32 bits, au maximum au bout de $2^{32}$
 itérations on retombera sur la ``seed'' choisie au départ. Dans l'idéal, on ne
 voudrait pas y retomber avant. Une bonne méthode de génération de nombres
+<<<<<<< HEAD
 pseudo-aléatoires devra donc garantis une période longue.
 
 \subsection{Les générateurs linéaires congruents (LCG)}\label{s:lcg}
@@ -255,21 +256,66 @@ de nombres.  Il s'agit de représenter les nombres les uns en fonction des autre
 dans un espace multidimensionnel de façon à identifier les redondances.  Le
 générateur $X_{n+1} =(7 X_{n})[101]$ donnent un histogramme des 101 premiers
 nombres avec la graine $X_0 = 1$ sur la figure ci-dessous à gauche:
+=======
+pseudo-aléatoires devra donc garantir une période longue.
+
+\section{Les générateurs à congruence linéaire}
+\subsection{Introduction}
+Le générateur à congruence linéaire (noté LCG pour Linear Congruence Generator) est un générateur de nombres aléatoires qui a été mis au point par Derrick Lehmer à la fin des années 1940. Elle est basée sur une fonction linéaire et l'arithmétique modulaire. Cela en fait une méthode déterministe générant des suites de nombres dont la période dépend de ses paramètres.
+Ce caractère déterministe a pour intérêt la reproductibilité des résultats utile notamment pour la recherche d'erreur dans les codes et comme référence pour des résultats scientifiques.\\
+Une suite $(X_n)$ de nombres est produite par itération à partir d'une graine:\linebreak
+$X_{n+1} = (a X_n +c)\, mod\, m$\\
+Ici, $mod \, m$ désigne le module $m$,
+$a$ est le multiplicateur,
+$c$ l'incrément,
+et $X_0$ est la graine. \\
+
+Le nombre $X_{n+1}$ est donc le reste de la division entière de $(a X_n +c)$ modulo $m$. Ainsi, à partir de la graine, chaque nombre peut être un entier entre 0 et $m-1$.
+Le caractère déterministe de la méthode fait apparaître une période qui est dans le meilleur des cas de longueur $m$.
+Pour générer une suite de nombres pseudo aléatoires suffisamment longue il est donc nécessaire que $m$ soit le plus grand possible.
+
+\subsection{Choix des paramètres}
+La conjugaison des paramètres $a$, $c$ et $m$ est décisive pour obtenir une suite de nombres satisfaisante. Illustrons ceci sur deux exemples simples:\\
+
+Cas 1: $X_{n+1} = (4 X_n + 3)\, mod\, 9$ avec $X_0 = 1$\\
+donne pour suite $1,7,4,1, \cdots$ dont la période est de 3.\\
+Cas 2: $X_{n+1} = (4 X_n +2)\, mod\, 9$ avec $X_0 = 1$\\ aboutit à $1,6,8,7,3,5,4,0,2,1, \cdots$. La période de 9 est donc ici maximale.\\
+
+Ainsi, les paramètres les plus favorables sont appelés "magic numbers". Ils répondent à des critères définis par un ensemble de théorèmes publiés par Hull et Dobell en 1962.
+D'autre part, on remarque l'absence du nombre 5 dans la liste du premier cas. S'il avait été donné comme graine, la suite aurait été uniquement constitué de cette valeur. Ceci montre l'importance du choix de la graine.
+
+\subsection{Des générateurs à congruence linéaire types}
+
+La facilité de l'implémentation de la méthode et sa grande variété de suites de pseudo-nombres aléatoires générés en a fait une méthode très prisée.
+Il existe donc un spectre important de générateurs dans tous les langages de programmation.\par
+Citons en particulier les cas suivants:\\
+IBM : $X_{n+1} =65539 X_{n}\, mod\, 2^{31}$\\
+Turbo Pascal : $X_{n+1} =(129 X_{n} + 907633385)\, mod\, 2^{32}$\\
+C ANSI : $X_{n+1} =(1103515245 X_{n}+12345)\, mod\, 2^{31}$\\
+Le module est de l'ordre de 32 bits à la limite maximale des ordinateurs utilisés.
+
+\subsection{Tests de validité}
+Afin de s'assurer de la validité d'un générateur de nombres pseudo-aléatoires, on peut effectuer un \textit{ test spectral} (considéré comme l'un des plus discriminants). Celui-ci permet d'observer directement la corrélation de la suite de nombres.
+Il s'agit de représenter les nombres les uns en fonction des autres dans un espace multidimensionnel et identifier les corrélations.
+Examinons les nombres produits par le générateur $X_{n+1} =(7 X_{n})\, mod\, 101$.
+>>>>>>> bea87238752a43f9d065cdf79926d497b965bfaa
 \begin{figure}
-  \begin{center}
-    \includegraphics[scale=0.4]{img/histo7Xn[101].png}
+    \begin{center}
+    \includegraphics[scale=0.6]{histo7Xn[101].png}
     \hspace{0.1\textwidth}
-    \includegraphics[scale=0.4]{img/a7m101.png}
-  \end{center}
-\end{figure}
-Cet histogramme montre la présence de toutes les valeurs possibles sans période
-inférieure à la valeur du module.  Afin de mettre en évidence les corrélations,
-on trace les 101 premières paires consécutives de nombres
-($X_n/m$,$X_{n+1}/m$). Chaque nombre est normalisé par le module permettant de
-visualiser dans l'espace $[0,1]^2$.  Sur la figure de droite, on y constate le
-recouvrement des valeurs entre 0 et 1. Le caractère déterministe apparaît avec
-les points à distance régulière suivent des droites. De plus, plus cette
-distance est faible plus le recouvrement est important.
+    \includegraphics[scale=0.6]{a7m101.png}
+    \end{center}
+    \caption{Données générées et test spectral}
+  \label{fig:DGTS}
+  \end{figure}
+  En dimension 1, on obtient un histogramme des 100 premiers nombres avec la graine $X_0 = 1$ (premier graphique de la figure \ref{fig:DGTS}).
+  Cet exemple montre la présence de toutes les valeurs possibles sans période inférieure à la valeur du module.\par
+Les corrélations apparaissent lorsqu'on trace les 100 premières paires consécutives de nombres ($X_n/m$,$X_{n+1}/m$).
+ Chaque nombre est normalisé par le module, le test spectral est donc de dimension 2 visualisable dans l'espace $[0,1]^2$.
+ Sur le deuxième graphique de la figure \ref{fig:DGTS}, on constate le recouvrement de $[0,1]^2$ par les valeurs générées. 
+ Le fait que le module est faible montre l'aspect déterministe et met en relief la cohésion des données. Les points sont à distance régulière et suivent des droites. 
+ Dans le cas général, plus la distance entre points est faible plus le recouvrement de l'espace entre 0 et 1 est important.
+Ainsi, on y constate le déterminisme qui fait du générateur à congruence linéaire un outil prédictible.
 
 \subsection{Mersenne Twister et les LFSR}\label{s:MT}
 La méthode la plus employée de nos jours est en fait le \textbf{Mersenne
@@ -285,7 +331,7 @@ L'algorithme du Mersenne Twister est assez compliqué et hors de la portée de c
 travail. Notons cependant qu'il se base sur les  \textbf{Linear-Feedback Shift
   Register}, une classe d'algorithmes dont un autre représentant, le
 \textbf{xorshift}, est aussi employé pour la génération de nombres
-pseudo-aléatoires. Il est pour l'instant moins courrant mais plus efficace que
+pseudo-aléatoires. Il est pour l'instant moins courant mais plus efficace que
 le Mersenne Twister.\footnote{https://en.wikipedia.org/wiki/Xorshift}
 
 \subsection{Vrai chaos déterministe}
@@ -442,12 +488,12 @@ On va voir deux catégories de sources physiques:
 \end{itemize}
 
 \subsubsection{Entropie classique}
-Parmis les sources d’entropie naturelle, on trouve tous les processus stochastiques où des lois microscopiques (déterministes ou pas) régissent l'évolution de nombreuses particules; ceci aboutit à une mesure macroscopique (comme la température) qu’il est impossible de prédire avec une précision infinie car elle dépend de trop de paramètres (état interne). \par
+Parmi les sources d’entropie naturelle, on trouve tous les processus stochastiques où des lois microscopiques (déterministes ou pas) régissent l'évolution de nombreuses particules; ceci aboutit à une mesure macroscopique (comme la température) qu’il est impossible de prédire avec une précision infinie car elle dépend de trop de paramètres (état interne). \par
 Un exemple typique est le bruit thermique correspondant aux fluctuations de la tension électrique aux bornes d’une résistance à une certaine température. En effet, le mouvement imprévisible des électrons se traduit en courant électrique et ceci affecte la tension. \par
 Ceci a été découvert en 1927 par Johnson puis expliqué théoriquement par Nyquist (\href{https://journals.aps.org/pr/abstract/10.1103/PhysRev.32.97}{Johnson} \& \href{https://journals.aps.org/pr/abstract/10.1103/PhysRev.32.110}{Nyquist}). \par
 Imaginons donc qu’on mesure la variation de la tension aux bornes de la résistance, on aurait une bonne source de hasard. \par
 Un autre exemple serait la mesure de la hauteur de l'eau dans un océan. La houle ou les vagues provoquées par le vent entraînent là aussi une impossibilité de prévoir à long terme la hauteur de l'eau. Il convient de remarquer que l'échantillonage des valeurs aléatoires ne devra pas dépasser une certaine fréquence qui dépend de la source employée. En effet, si on prend la hauteur de l'eau chaque seconde, par exemple, les mesures seront fortement corrélées alors que si on mesure une fois par heure, il sera impossible de trouver une corrélations entre les mesures.\par
-Mais même si la suite temporelle de valeurs de la tension ou de la hauteur de l'eau est chaotique, elle n'est pas forcément entièrement imprévisible, dumoins en théorie. C'est ce que mettent en avant les défenseurs de la prochaine source d'entropie...
+Mais même si la suite temporelle de valeurs de la tension ou de la hauteur de l'eau est chaotique, elle n'est pas forcément entièrement imprévisible, du moins en théorie. C'est ce que mettent en avant les défenseurs de la prochaine source d'entropie...
 
 \subsubsection{Entropie quantique}
 Les phénomènes quantiques ont l’avantage d’être intrinsèquement indéterministes. 
@@ -516,7 +562,7 @@ d'une sous-collection aléatoire d'une collection donnée.
 
 \subsection{Tests comparatifs de différents RNGs}
 Un simple test avec des tirages aléatoires en utilisant
-\texttt{random.uniform(0, 1)} à partir d'une même seed avec des nombre de
+\texttt{random.uniform(0, 1)} à partir d'une même seed avec des nombres de
 tirages cumulés différents permet d'observer graphiquement comment on se
 rapproche d'une distribution uniforme au fur et à mesure que l'on augmente le
 nombre de tirages. La figure ci-dessous montre la répartition des nombres dans
