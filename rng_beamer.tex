@@ -382,78 +382,83 @@
 \end{frame}
 }
 
-\section{Générateurs de nombres ``vraiment'' aléatoires}
+
+\section{Comment générer de ``vrais'' nombres aléatoires?}\label{s:TRNG}
 \minitoc
-\subsection{Généralités - Processeur incapable}
-\begin{frame}{Généralités - Processeur incapable}
-\begin{itemize}
- \item Processeur arrive plutôt bien à propager de l’aléatoire
- \item Voir algorithmes présentés précédemment
- \item Mais il lui faut un coup de pouce au départ
- \item  Besoin d’une graine pour démarrer
- \item Pourquoi hasard inaccessible au processeur?
- \item Car le processeur est profondément déterministe
- \end{itemize}  
-\end{frame}
-\subsection{Algorithmes d'aggrégation et expansion d'entropie}
-\begin{frame}{Algorithmes d'aggrégation et expansion d'entropie}
+\subsection{Quel est le problème?}
+\begin{frame}
+\frametitle{Quel est le problème?}
  \begin{itemize}
- \item Algorithme pour grossir le flux de TRNG (pas assez rapide)
- \item HAVEGE (utilisé par le noyau Linux)
- \item HArdware Volatile Entropy Gathering and Expansion
- \item https://www.irisa.fr/caps/projects/hipsor/misc.php
+ \item Les algorithmes PRNG sont efficaces MAIS...
+ \item<2-> Ils dépendent d'une graine
+ \item<3-> Ils sont déterministes
  \end{itemize}
+\onslide<4>{
+\par
+Comment générer une graine vraiment aléatoire?
+}
 \end{frame}
-\subsection{Généralités - Le Monde réel oui}
-\begin{frame}{Généralités - Le Monde réel oui}
+
+\subsection{Différentes source d'entropie}
+\begin{frame}
+\frametitle{Sources d'entropie}
  \begin{itemize}
- \item Aléatoire inévitable et dérangeant dans le monde réel!
-   \begin{itemize}
-   \item Incertitudes fondamentales des mesures
-   \item Impossibilité de contrôler une valeur physique
-   \end{itemize}
- \item Monde réel est donc LA source d’inspiration
- \end{itemize}
-\end{frame}
-\subsection{Collection d'entropie}
-\begin{frame}{Collection d'entropie}
+ \item Interne
   \begin{itemize}
-  \item Principales sources de hasard:
-    \begin{itemize}
-    \item phénomènes physiques stochastiques:
-      \begin{itemize}
-      \item bruit thermique (Johnson et Nyquist)
-      \item autres phénomènes statistiques (vagues, etc.)
-      \end{itemize}
-    \item phénomènes quantiques intrinsèquement aléatoires
-      \begin{itemize}
-      \item effet photoélectrique
-      \item n’importe quelle autre mesure quantique
-      \end{itemize}
-    \end{itemize}
+  \item<2-> HAVEGE
+  \item<3-> HArdware Volatile Entropy Gathering and Expansion
+  \item<4-> état interne très complexe + algorithme = résultat imprévisible
   \end{itemize}
-\end{frame}
-\subsection{Le futur est-il quantique?}
-\begin{frame}{Le futur est-il quantique?}
- \begin{itemize}
- \item Sources quantiques:
+ \item Externe
+  \begin{itemize}
+  \item<5-> phénomènes classiques (stochastique)
    \begin{itemize}
-   \item source de radioactivité détectée par un compteur Geiger
-   \item photons traversant un miroir semi-réfléchissant
-   \item C’est le choix de la compagnie Genevoise ID Quantique
+   \item<6-> Bruit thermique
    \end{itemize}
+  \item<5-> phénomènes quantiques (individuel)
+   \begin{itemize}
+   \item<7-> Désintégration radioactive
+   \item<8-> Photon et miroir semi-réfléchissant \onslide<9>{$\rightarrow$ ID Quantique}
+   \end{itemize}
+  \end{itemize}
  \end{itemize}
 \end{frame}
-\subsection{Exemple genevois: ID Quantique}
-\begin{frame}{Exemple genevois: ID Quantique}
-  \begin{itemize}
-  \item Principe de la source ID Quantique:
-    \begin{itemize}
-    \item photons traversant un miroir semi-réfléchissant
-    \item événements mutuellement exclusifs (réflexion / transmission)
-    \item Détection associée respectivement à des valeurs de bit 0 ou 1
-    \end{itemize}
-  \end{itemize}
+
+
+\subsubsection{ID Quantique et ses photons}
+\begin{frame}
+\frametitle{ID Quantique}
+ \begin{itemize}
+ \item Entreprise genevoise
+ \item<2-> Leader du TRNG quantique
+ \item<3-> spin off de l’université de Genève
+ \item<4-> fondée en 2001 par 3 scientifiques
+ \item<5-> dont l’actuel CEO Grégoire Ribordy qui nous a ouvert ses portes! 
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Principe du QRNG chez ID Quantique}
+\par
+\onslide<2> {Diode LASER émet un photon.}
+\onslide<3> {qui arrive sur paroi semi-réfléchissante.}
+\onslide<4> {Détecteur "0" si le photon est réfléchi}
+\onslide<5> {Détecteur "1" si le photon est traverse}
+\par
+\begin{center}
+  \includegraphics[scale=0.25]{img/Figure1.OpticalSystemUsedTuGenerateRandomNumbers.jpg}  
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Avantages du QRNG}
+ \begin{itemize}
+ \item<2-> Processus individuel, intrinsèquement aléatoire $\rightarrow$ inattaquable
+ \item<3-> LASER $\rightarrow$ tous les photons dans le même état
+ \item<4-> Superposition quantique "traverse" et "est réfléchi"
+ \item<5-> Détection $\rightarrow$ "réduction du paquet d'onde"
+ \item<6-> Pas d'état interne à espioner, aucun moyen de deviner le bit avant qu'il ne soit généré
+ \end{itemize}
 \end{frame}
 
 \section{RNG dans Python}
