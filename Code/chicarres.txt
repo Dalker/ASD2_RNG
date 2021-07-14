@@ -1,0 +1,27 @@
+résultat avec N = 8192
+----------------------
+VonNeumann a une valeur de chi carré de 7.44
+LCG a=3 mod 7 a une valeur de chi carré de 5461.33
+LCG RANDU(IBM) a une valeur de chi carré de 10.49
+Mersenne Twister a une valeur de chi carré de 8.54
+RNG de l'OS a une valeur de chi carré de 3.47
+Saito-Yamaguchi a une valeur de chi carré de 5.42
+
+résultat avec N = 8000
+----------------------
+VonNeumann a une valeur de chi carré de 8.39
+LCG a=3 mod 7 a une valeur de chi carré de 5333.33
+LCG RANDU(IBM) a une valeur de chi carré de 8.79
+Mersenne Twister a une valeur de chi carré de 8.88
+RNG de l'OS a une valeur de chi carré de 5.04
+Saito-Yamaguchi a une valeur de chi carré de 5.94
+
+et refait une 2è fois (l'OS devrait changer, les autres pas):
+
+VonNeumann a une valeur de chi carré de 8.39
+LCG a=3 mod 7 a une valeur de chi carré de 5333.33
+LCG RANDU(IBM) a une valeur de chi carré de 8.79
+Mersenne Twister a une valeur de chi carré de 8.88
+RNG de l'OS a une valeur de chi carré de 4.4
+Saito-Yamaguchi a une valeur de chi carré de 5.94
+

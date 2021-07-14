@@ -7,6 +7,7 @@
 \usepackage{array}
 \usepackage{hyperref}  % liens clicables dans pdf final
 \usepackage{tikz}  % pouvoir tracer des dessins sympas
+\usetikzlibrary{calc}  % pour subtilités dans l'étiquettage d'images
 \usetheme{Boadilla}  % thème de beamer
 \usepackage{listingsutf8}  % rendu de "code" (avec config ci-dessous)
 % configuration de lstlisting pour montrer du code python
@@ -501,6 +502,39 @@ l = random.sample(["a", "b", "c", "d", "e"], 2)
 \end{lstlisting}
 \end{frame}
 }
+\subsection{Est-ce que ça marche?}
+\begin{frame}{Est-ce que ça marche?}
+  Tirage de 8000 nombres avec différents générateurs:
+  %\vspace{-3ex}
+  \begin{center}
+    \begin{tikzpicture}
+      % gestion d'étiquettage d'images selon la source suivante:
+      % https://latexdraw.com/how-to-annotate-an-image-in-latex/
+      \node[above right, inner sep=0] (image) at (0, 0) {
+        \includegraphics[width=0.8\textwidth]{img/rng8000b.png}
+      };
+      \begin{scope}[ % travailler "dans l'image"
+        x={($0.1*(image.south east)$)},
+        y={($0.1*(image.north west)$)}]
+        % grille temporaire pour trouver où mettre les chi carrés
+        %\draw[lightgray,step=1] (image.south west) grid (image.north east);
+        %\foreach \x in {0,1,...,10} { \node [below] at (\x,0) {\x}; }
+        %\foreach \y in {0,1,...,10} { \node [left] at (0,\y) {\y};}
+        % et enfin les chi carrés
+        \onslide<2->{
+        \small\color{blue}\bfseries
+        \node at (2.5, 7) {$\chi^2 = 8.4$};
+        \node at (5, 7) {$\chi^2 = 5333$};
+        \node at (8, 7) {$\chi^2 = 8.8$};
+        \node at (2.5, 3) {$\chi^2 = 8.9$};
+        \node at (5, 3) {$\chi^2 = 4.4$};
+        \node at (8, 3) {$\chi^2 = 5.9$};
+        }
+      \end{scope}
+    \end{tikzpicture}
+  \end{center}
+  code source: dossier \texttt{Code} dans \url{github.com/dalker/ASD2_RNG/}
+\end{frame}
 \ignore{
 \subsection{Est-ce que ça marche?}
 \begin{frame}{Est-ce que ça marche?}
