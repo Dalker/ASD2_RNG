@@ -245,14 +245,14 @@ liste du premier cas. S'il avait été donné comme graine, la suite aurait ét�
 uniquement constitué de cette valeur. Ceci montre l'importance du choix de la
 graine.
 
-\subsubsection{Des générateurs à congruence linéaire types}
+\subsubsection{Des générateurs à congruence linéaire types}\label{ss:randu}
 
 La facilité de l'implémentation de la méthode et sa grande variété de suites de
 pseudo-nombres aléatoires générés en a fait une méthode très prisée.  Il existe
 donc un spectre important de générateurs dans tous les langages de
 programmation.\par
 Citons en particulier les cas suivants:\par
-IBM : $X_{n+1} =65539 X_{n}\, mod\, 2^{31}$\\
+RANDU (IBM) : $X_{n+1} =65539 X_{n}\, mod\, 2^{31}$\\
 Turbo Pascal : $X_{n+1} =(129 X_{n} + 907633385)\, mod\, 2^{32}$\\
 C ANSI : $X_{n+1} =(1103515245 X_{n}+12345)\, mod\, 2^{31}$\\
 Le module est de l'ordre de 32 bits à la limite maximale des ordinateurs
@@ -304,9 +304,9 @@ pseudo-aléatoires. Il est pour l'instant moins courant mais plus efficace que
 le Mersenne Twister.\footnote{https://en.wikipedia.org/wiki/Xorshift}
 
 \subsection{Vrai chaos déterministe}
-\subsubsection{Pseudo-aléatoire avec suites chaotiques?x}
+\subsubsection{Pseudo-aléatoire avec suites chaotiques?}
 Le problème des générateurs basés sur la théorie des nombres, c’est qu’ils
-produisent des séquences périodiques, qui possèdent des propriétés qui rend la
+produisent des suites périodiques, qui possèdent des propriétés qui rend la
 suite en partie prévisible, parce que les nombres générés sont dépendants de
 ceux qui les précèdent, ce qui ne se produit jamais dans une vraie suite
 aléatoire ! \par
@@ -317,20 +317,20 @@ générateurs basés sur la théorie des nombres. \par
 Le générateur de nombres pseudo-aléatoires présenté ci-dessous (Saito \&
 Yamaguchi \cite{SY}) utilise les deux théories pour produire des suites qui
 ressemblent à de vraies suites aléatoires non périodiques. Son coût
-computationnel est élevé, mais les séquences générées peuvent par exemple servir
+computationnel est élevé, mais les suites générées peuvent par exemple servir
 de référence pour des tests qualitatifs.
 
 \subsubsection{Point de départ: le décalage de Bernouilli}
 La relation $\alpha_{n+1}=(2\alpha_n)\ mod\ 1$ définit une suite où
 $\alpha_n \in [0;1[$. En arrondissant les termes de cette suite, on obtient une
-séquence binaire pseudo-aléatoire. \par
+suite binaire pseudo-aléatoire. \par
 Exemple : $\alpha_0$ = 0.3 donne la suite \{ 0.3; \textbf{0.6}; 0.2; 0.4; 0.8;
 \textbf{0.6}; … \} \par
-ou la séquence 01001100110011001... qui est périodique et donc très
+ou la suite 01001100110011001... qui est périodique et donc très
 prévisible. \par
 Mais si $\alpha_0$ est \textbf{irrationnel}, cette suite devient \textbf{non
   périodique}. Cela signifie qu’une infinitésimale variation de $\alpha_0$
-provoquera un changement radical à un moment de la séquence. Cette forte
+provoquera un changement radical à un moment de la suite. Cette forte
 sensibilité aux conditions initiales est une caractéristique des fonctions
 chaotiques : au bout d'un certain temps, un phénomène chaotique devient
 imprévisible.  Une loi déterministe va évidemment être prévisible si ses
@@ -348,33 +348,33 @@ $n$ & $\alpha_n$ & valeur & $\epsilon_n$ & $\overline{\epsilon}_n$ & valeur & $\
 1 & $\pi/2-1$ & 0.57079632 & 1 & 1 & 0.57079646 & $\frac{258}{452}$ \\
 2 & $\pi-3$ & 0.14159265 & 0 & 0 & 0.14159292 & $\frac{64}{452}$ \\
 3 & $2\pi-6$ & 0.28318530 & 0 & 0 & 0.28318584 & $\frac{128}{452}$ \\
-4 & 4$\pi$‒12 & 0.56637061 & 1 & 1 & 0.56637168 & $\frac{256}{452}$ \\
-5 & 8$\pi$‒25 & 0.13274122 & 0 & 0 & 0.13274336 & $\frac{60}{452}$ \\
-6 & 16$\pi$‒50 & 0.26548245 & 0 & 0 & 0.26548672 & $\frac{120}{452}$ \\
-7 & 32$\pi$‒100 & 0.53096491 & 1 & 1 & 0.53097345 & $\frac{240}{452}$ \\
-8 & 64$\pi$‒201 & 0.06192982 & 0 & 0 & 0.06194690 & $\frac{28}{452}$ \\
-9 & 128$\pi$‒402 & 0.12385965 & 0 & 0 & 0.12389380 & $\frac{56}{452}$ \\
-10 & 256$\pi$‒804 & 0.24771931 & 0 & 0 & 0.24778761 & $\frac{112}{452}$ \\
-11 & 512$\pi$‒1608 & 0.49543863 & 0 & 0 & 0.49557522 & $\frac{224}{452}$ \\
-12 & 1024$\pi$‒3216 & 0.99087727 & 1 & 1 & 0.99115044 & $\frac{448}{452}$ \\
-13 & 2048$\pi$‒6433 & 0.98175455 & 1 & 1 & 0.98230088 & $\frac{444}{452}$ \\
-14 & 4096$\pi$‒12867 & 0.96350910 & 1 & 1 & 0.96460176 & $\frac{436}{452}$ \\
-15 & 8192$\pi$‒25735 & 0.92701820 & 1 & 1 & 0.92920353 & $\frac{420}{452}$ \\
-16 & 16384$\pi$‒51471 & 0.85403641 & 1 & 1 & 0.85840707 & $\frac{388}{452}$ \\
-17 & 32768$\pi$‒102943 & 0.70807283 & 1 & 1 & 0.71681415 & $\frac{324}{452}$ \\
-18 & 65536$\pi$‒205887 & 0.41614566 & 0 & 0 & 0.43362831 & $\frac{196}{452}$ \\
-19 & 131072$\pi$‒411774 & 0.83229132 & 1 & 1 & 0.86725663 & $\frac{392}{452}$ \\
-20 & 262144$\pi$‒823549 & 0.66458264 & 1 & 1 & 0.73451327 & $\frac{332}{452}$ \\
-21 & 524288$\pi$‒1647099 & 0.32916528 & 0 & 0 & 0.46902654 & $\frac{212}{452}$ \\
-22 & 1048576$\pi$‒3294198 & 0.65833057 & 1 & 1 & 0.93805309 & $\frac{424}{452}$ \\
-23 & 2097152$\pi$‒6588397 & 0.31666114 & 0 & 1 & 0.87610619 & $\frac{396}{452}$ \\
-23 & 4194304$\pi$‒13176794 & 0.63332228 & 1 & 1 & 0.75221238 & $\frac{340}{452}$ \\
-24 & 8388608$\pi$‒26353589 & 0.26664456 & 0 & 1 & 0.50442477 & $\frac{228}{452}$ \\
-25 & 16777216$\pi$‒52707178 & 0.53328913 & 1 & 0 & 0.00884955 & $\frac{4}{452}$ \\
-26 & 33554432$\pi$‒105414357 & 0.06657826 & 0 & 0 & 0.01769911 & $\frac{8}{452}$ \\
-27 & 67108864$\pi$‒210828714 & 0.13315653 & 0 & 0 & 0.03539823 & $\frac{16}{452}$ \\
-28 & 134217728$\pi$‒421657428 & 0.26631307 & 0 & 0 & 0.07079646 & $\frac{32}{452}$ \\
-29 & 268435456$\pi$‒843314856 & 0.53262615 & 1 & 0 & 0.14159292 & $\frac{64}{452}$ \\
+4 & $4\pi‒12$ & 0.56637061 & 1 & 1 & 0.56637168 & $\frac{256}{452}$ \\
+5 & $8\pi‒25$ & 0.13274122 & 0 & 0 & 0.13274336 & $\frac{60}{452}$ \\
+6 & $16\pi‒50$ & 0.26548245 & 0 & 0 & 0.26548672 & $\frac{120}{452}$ \\
+7 & $32\pi‒100$ & 0.53096491 & 1 & 1 & 0.53097345 & $\frac{240}{452}$ \\
+8 & $64\pi‒201$ & 0.06192982 & 0 & 0 & 0.06194690 & $\frac{28}{452}$ \\
+9 & $128\pi‒402$ & 0.12385965 & 0 & 0 & 0.12389380 & $\frac{56}{452}$ \\
+10 & $256\pi‒804$ & 0.24771931 & 0 & 0 & 0.24778761 & $\frac{112}{452}$ \\
+11 & $512\pi‒1608$ & 0.49543863 & 0 & 0 & 0.49557522 & $\frac{224}{452}$ \\
+12 & $1024\pi‒3216$ & 0.99087727 & 1 & 1 & 0.99115044 & $\frac{448}{452}$ \\
+13 & $2048\pi‒6433$ & 0.98175455 & 1 & 1 & 0.98230088 & $\frac{444}{452}$ \\
+14 & $4096\pi‒12867$ & 0.96350910 & 1 & 1 & 0.96460176 & $\frac{436}{452}$ \\
+15 & $8192\pi‒25735$ & 0.92701820 & 1 & 1 & 0.92920353 & $\frac{420}{452}$ \\
+16 & $16384\pi‒51471$ & 0.85403641 & 1 & 1 & 0.85840707 & $\frac{388}{452}$ \\
+17 & $32768\pi‒102943$ & 0.70807283 & 1 & 1 & 0.71681415 & $\frac{324}{452}$ \\
+18 & $65536\pi‒205887$ & 0.41614566 & 0 & 0 & 0.43362831 & $\frac{196}{452}$ \\
+19 & $131072\pi‒411774$ & 0.83229132 & 1 & 1 & 0.86725663 & $\frac{392}{452}$ \\
+20 & $262144\pi‒823549$ & 0.66458264 & 1 & 1 & 0.73451327 & $\frac{332}{452}$ \\
+21 & $524288\pi‒1647099$ & 0.32916528 & 0 & 0 & 0.46902654 & $\frac{212}{452}$ \\
+22 & $1048576\pi‒3294198$ & 0.65833057 & 1 & 1 & 0.93805309 & $\frac{424}{452}$ \\
+23 & $2097152\pi‒6588397$ & 0.31666114 & 0 & 1 & 0.87610619 & $\frac{396}{452}$ \\
+23 & $4194304\pi‒13176794$ & 0.63332228 & 1 & 1 & 0.75221238 & $\frac{340}{452}$ \\
+24 & $8388608\pi‒26353589$ & 0.26664456 & 0 & 1 & 0.50442477 & $\frac{228}{452}$ \\
+25 & $16777216\pi‒52707178$ & 0.53328913 & 1 & 0 & 0.00884955 & $\frac{4}{452}$ \\
+26 & $33554432\pi‒105414357$ & 0.06657826 & 0 & 0 & 0.01769911 & $\frac{8}{452}$ \\
+27 & $67108864\pi‒210828714$ & 0.13315653 & 0 & 0 & 0.03539823 & $\frac{16}{452}$ \\
+28 & $134217728\pi‒421657428$ & 0.26631307 & 0 & 0 & 0.07079646 & $\frac{32}{452}$ \\
+29 & $268435456\pi‒843314856$ & 0.53262615 & 1 & 0 & 0.14159292 & $\frac{64}{452}$ \\
 \end{tabular}
 \caption{Exemple comparé, avec $\alpha_0 = \frac{\pi}{4}$ et
   $\overline{\alpha}_0 = \frac{355}{452}$, deux valeurs très proches
@@ -404,13 +404,13 @@ choisissant $\alpha_0$ comme racine d’un polynôme du 3e degré $f_0$ dont les
 coefficients sont entiers, et qui a une unique racine réelle. \par
 Ainsi, on peut facilement déterminer le polynôme $f_1$ dont $\alpha_1$ est la
 racine, et ainsi de suite. \par
-Exemple : on pose $f_0(x) = x^3+x–1$ et $f_n(x) = x^3+b_nx^2+c_nx–d_n$, avec
+Exemple : on pose $f_0(x) = x^3+x-1$ et $f_n(x) = x^3+b_nx^2+c_nx-d_n$, avec
 $f_n(\alpha_n) = 0$, et $\epsilon_n = (\alpha_n)$.
 \begin{center}
   \includegraphics[scale=0.75]{img/SaitoYamaguchi2017.png}  
 \end{center}
 
-\subsubsection{Calcul de la séquence}
+\subsubsection{Calcul de la suite}
 Alors les relations ci-dessous permettent d'éviter le calcul des $\alpha_n$:\par
 \begin{tabular}{ l l }
   $a_n$ = 1 & $b_{n+1}$ = $2b_n+3\epsilon_n$ \\
@@ -418,13 +418,13 @@ Alors les relations ci-dessous permettent d'éviter le calcul des $\alpha_n$:\pa
             & $d_{n+1} = 8d_n+(4c_n+2b_n+1)\epsilon_n$ \\
   \multicolumn{2}{l}{$1 + 2b_n + 4c_n + 8d_n < 0 \ \Leftrightarrow \ \alpha_n > \frac{1}{2} \ \Leftrightarrow \ \epsilon_n = 1 $}
 \end{tabular}\par
-La production de la séquence pseudo-aléatoire
+La production de la suite pseudo-aléatoire
 $\{\epsilon_n\}_{n \in \mathbb{N}}$ consiste donc à déterminer les termes de la
 suite $\{ (b_n,c_n,d_n,\epsilon_n) \}_{n \in \mathbb{N}}$. Celle-ci se construit
 entièrement avec des opérations élémentaires, sans avoir à extraire les racines
 $\alpha_n$ qui restent implicites. \par
 \medskip Selon les auteurs, en choisissant bien les coefficients du polynôme
-initial $f_0$, on peut vérifier que la séquence binaire produite est presque
+initial $f_0$, on peut vérifier que la suite binaire produite est presque
 uniformément distribuée sur l’intervalle [0;1]. \par
 
 
@@ -550,12 +550,11 @@ générateur suivants:
 \begin{enumerate}
 \item Générateur avec la méthode des carrés mentionnée par Von Neumann
   (cf. section \ref{ss:carres}) avec une \textit{seed} de $36000000$
-  (expérimentallement, celle-ci doit être de l'ordre de grandeur de
-  $2^{30}-2^{31}$ pour que cela se passe en travaillant à 32 bits (64 bits pour
-  l'étape intermériaire du carré avant d'extraire les bits centraux).
+  (suffisamment grand pour éviter 32 bits centraux égaux à 0 après la première
+  étape).
 \item Générateur linéaire congruent modulo 7 avec $a=3$ et $c=0$, avec /seed/ $2021$.
 \item Générateur linéaire congruent avec les paramètres de RANDU (cf. section
-  \label{ss:randu}), avec /seed/ $2021$
+  \ref{ss:randu}), avec /seed/ $2021$
 \item Mersenne Twister (cf. section \ref{s:MT}) du module \texttt{random} de la librairie standard de
   python, avec /seed/ $2021$
 \item RNG du système d'exploitation (\texttt{/dev/urandom} de Linux dans ces
@@ -578,7 +577,7 @@ suivants:
   \begin{tabular}{rr}
     méthode des carrés de Von Neumann& {$\chi^2 = 8.4$}\\
     LCG avec mauvais paramètres& {$\chi^2 = 5333$}\\
-    LCG avec paramètres RANDU/IBM& {$\chi^2 = 8.8$}\\
+    LCG avec paramètres RANDU& {$\chi^2 = 8.8$}\\
     Mersenne Twister& {$\chi^2 = 8.9$}\\
     HAVEGE via l'OS& {$\chi^2 = 4.4$}\\
     Saito-Yamagotchi& {$\chi^2 = 5.9$}
@@ -589,7 +588,7 @@ Nous constatons qu'avec un choix raisonnable de /seed/, il n'y a pas de
 différence statistique substantielle entre la méthode ``naïve'' des carrés, un
 générateur linéaire congruent et le Mersenne Twister, tous trois a priori utiles
 comme départ d'algorithmes probabilistes ne se préoccupant pas du niveau de
-predictibilité à l'intérieur même des séquences.  La méthode de Saito-Yamagotchi
+predictibilité à l'intérieur même des suites.  La méthode de Saito-Yamagotchi
 en revanche se rapproche nettement plus des résultats obtenus à partir du TRNG
 classique du système d'exploitation. Nous n'avons pas pu effectuer des tests
 avec un TRNG quantique, qui serait bien sûr l'étalon idéal.
@@ -624,7 +623,7 @@ suivante).
     \hline
     méthode des carrés de Von Neumann&0.006&  0.009& 0.022&  0.025 \\
     LCG avec mauvais paramètres&  0.200&  0.244&  0.155&  0.226\\
-    LCG avec paramètres RANDU/IBM&  0.022&  0.020&  0.025&  0.017\\
+    LCG avec paramètres RANDU&  0.022&  0.020&  0.025&  0.017\\
     Mersenne Twister& 0.006&  0.006&  0.007&  0.006\\
     HAVEGE via l'OS&  0.007&  0.013&  0.007&  0.013\\
     Saito-Yamagotchi& 0.005&  0.003&  0.000&  0.006
