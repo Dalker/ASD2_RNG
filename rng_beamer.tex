@@ -207,7 +207,8 @@
   \end{minipage}
 \end{frame}
 \subsection{Suite aléatoire? (tests)}
-\begin{frame}{LCG: Suite aléatoire?}
+\ignore{ % ancienne version
+  \begin{frame}{LCG: Suite aléatoire?}
   Exemples de tests spectraux pour 100 nombres successifs
     \begin{figure}
       \begin{center}
@@ -218,6 +219,20 @@
     \end{figure}
     % discrépance : mesure de l'homogénéité et du recouvrement\par
     % faible $\rightarrow$ couverture fine et homogène des nombres générés dans $[0,1]^2$
+\end{frame}
+}
+\begin{frame}{LCG: suite aléatoire ?}
+  Tests spectraux pour 100 nombres successifs
+  \begin{figure}
+    \begin{center}
+      \only<1>{\includegraphics[scale=0.5]{img/histo7Xn[101].png}}
+      \only<2>{\includegraphics[scale=0.4]{img/a7m101.png}}
+      \only<3>{\includegraphics[scale=0.5]{img/Specta4c3m9.png}}
+      \onslide<2->{\hspace{0.1\textwidth}}
+      \only<2>{\includegraphics[scale=0.4]{img/a51m101.png}}
+      \only<3>{\includegraphics[scale=0.5]{img/Specta4c2m9.png}}
+    \end{center}
+  \end{figure}
 \end{frame}
 
 \section{Vrai chaos déterministe}
