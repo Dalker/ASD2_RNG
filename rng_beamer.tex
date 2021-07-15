@@ -520,7 +520,7 @@ l = random.sample(["a", "b", "c", "d", "e"], 2)
       % gestion d'étiquettage d'images selon la source suivante:
       % https://latexdraw.com/how-to-annotate-an-image-in-latex/
       \node[above right, inner sep=0] (image) at (0, 0) {
-        \includegraphics[width=0.8\textwidth]{img/rng8000b.png}
+        \includegraphics[width=0.8\textwidth]{img/uniformite8000.png}
       };
       \begin{scope}[ % travailler "dans l'image"
         x={($0.1*(image.south east)$)},
@@ -530,21 +530,33 @@ l = random.sample(["a", "b", "c", "d", "e"], 2)
         %\foreach \x in {0,1,...,10} { \node [below] at (\x,0) {\x}; }
         %\foreach \y in {0,1,...,10} { \node [left] at (0,\y) {\y};}
         % et enfin les chi carrés
+        \definecolor{good}{rgb}{0.0, 0.4, 0.2}
+        \definecolor{bad}{rgb}{0.7, 0.4, 0.4}
         \onslide<2->{
-        \small\color{blue}\bfseries
-        \node at (2.5, 7) {$\chi^2 = 8.4$};
-        \node at (5, 7) {$\chi^2 = 5333$};
-        \node at (8, 7) {$\chi^2 = 8.8$};
-        \node at (2.5, 3) {$\chi^2 = 8.9$};
-        \node at (5, 3) {$\chi^2 = 4.4$};
-        \node at (8, 3) {$\chi^2 = 5.9$};
+          \small\color<3->{good}\bfseries
+          \node at (2.5, 7) {$\chi^2 = 8.4$};
+          \node at (5, 7) {\color<3->{bad}$\chi^2 = 5333$};
+          \node at (8, 7) {$\chi^2 = 8.8$};
+          \node at (2.5, 3) {$\chi^2 = 8.9$};
+          \node at (5, 3) {$\chi^2 = 4.4$};
+          \node at (8, 3) {$\chi^2 = 5.9$};
+        }
+        \onslide<4->{
+          \small\color{black}\bfseries
+          \node at (2.5, 6) {\color<5->{bad}$c = 0.025$};
+          \node at (5, 6) {\color<5->{bad}$c = 0.244$};
+          \node at (8, 6) {\color<5->{bad}$c = 0.025$};
+          \node at (2.5, 2) {\color<5->{good}$c = 0.007$};
+          \node at (5, 2) {\color<5->{good}$c = 0.013$};
+          \node at (8, 2) {\color<5->{good}$c = 0.006$};
         }
       \end{scope}
     \end{tikzpicture}
   \end{center}
   \vspace{-4ex}
-  \onslide<3->{La \textbf{corrélation} en revanche montre\par
-    Mersenne Twister, Saito-Yamagotchi, HAVEGE > LCG (cf. rapport)}
+  %\onslide<3->{La \textbf{corrélation} en revanche montre\par
+  % Mersenne Twister, Saito-Yamagotchi, HAVEGE > LCG (cf. rapport)}
+  tests: uniformité \onslide<2->{($\chi^2$)}\onslide<4->{, corrélation ($c$)}
   \par\medskip
   code source: dossier \texttt{Code} dans \url{github.com/dalker/ASD2_RNG/}
 \end{frame}
@@ -563,7 +575,8 @@ l = random.sample(["a", "b", "c", "d", "e"], 2)
 \begin{frame}{FIN}
   \begin{center}
     %\includegraphics[width=.7\textwidth]{img/dilbert_evil.png}
-    \includegraphics[width=.35\textwidth]{img/xkcd_sports.png}
+    \includegraphics[width=.35\textwidth]{img/xkcd_sports.png}\par
+    (source: \texttt{xkcd.com})
   \end{center}
 \end{frame}
 
