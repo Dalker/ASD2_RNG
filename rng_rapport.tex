@@ -266,25 +266,29 @@ suite de nombres.  Il s'agit de représenter les nombres les uns en fonction des
 autres dans un espace multidimensionnel et identifier les corrélations.
 Examinons les nombres produits par le générateur
 $X_{n+1} =(7 X_{n})\, mod\, 101$.
-%>>>>>>> bea87238752a43f9d065cdf79926d497b965bfaa  <-- ça a été mis par JFR mais
-% semble HS 
 \begin{figure}
-    \begin{center}
+  \begin{center}
     \includegraphics[scale=0.6]{img/histo7Xn[101].png}
     \hspace{0.1\textwidth}
     \includegraphics[scale=0.6]{img/a7m101.png}
-    \end{center}
-    \caption{Données générées et test spectral}
+  \end{center}
+  \caption{Données générées et test spectral}
   \label{fig:DGTS}
-  \end{figure}
-  En dimension 1, on obtient un histogramme des 100 premiers nombres avec la graine $X_0 = 1$ (premier graphique de la figure \ref{fig:DGTS}).
-  Cet exemple montre la présence de toutes les valeurs possibles sans période inférieure à la valeur du module.\par
-Les corrélations apparaissent lorsqu'on trace les 100 premières paires consécutives de nombres ($X_n/m$,$X_{n+1}/m$).
- Chaque nombre est normalisé par le module, le test spectral est donc de dimension 2 visualisable dans l'espace $[0,1]^2$.
- Sur le deuxième graphique de la figure \ref{fig:DGTS}, on constate le recouvrement de $[0,1]^2$ par les valeurs générées. 
- Le fait que le module est faible montre l'aspect déterministe et met en relief la cohésion des données. Les points sont à distance régulière et suivent des droites. 
- Dans le cas général, plus la distance entre points est faible plus le recouvrement de l'espace entre 0 et 1 est important.
-Ainsi, on y constate le déterminisme qui fait du générateur à congruence linéaire un outil prédictible.
+\end{figure}
+En dimension 1, on obtient un histogramme des 100 premiers nombres avec la
+graine $X_0 = 1$ (premier graphique de la figure \ref{fig:DGTS}).  Cet exemple
+montre la présence de toutes les valeurs possibles sans période inférieure à la
+valeur du module.\par
+Les corrélations apparaissent lorsqu'on trace les 100 premières paires
+consécutives de nombres ($X_n/m$,$X_{n+1}/m$).  Chaque nombre est normalisé par
+le module, le test spectral est donc de dimension 2 visualisable dans l'espace
+$[0,1]^2$.  Sur le deuxième graphique de la figure \ref{fig:DGTS}, on constate
+le recouvrement de $[0,1]^2$ par les valeurs générées.  Le fait que le module
+est faible montre l'aspect déterministe et met en relief la cohésion des
+données. Les points sont à distance régulière et suivent des droites.  Dans le
+cas général, plus la distance entre points est faible plus le recouvrement de
+l'espace entre 0 et 1 est important.  Ainsi, on y constate le déterminisme qui
+fait du générateur à congruence linéaire un outil prédictible.
 
 \subsection{Mersenne Twister et les LFSR}\label{s:MT}
 La méthode la plus employée de nos jours est en fait le \textbf{Mersenne
@@ -306,7 +310,7 @@ le Mersenne Twister.\footnote{https://en.wikipedia.org/wiki/Xorshift}
 \subsection{Vrai chaos déterministe}
 \subsubsection{Pseudo-aléatoire avec suites chaotiques?}
 Le problème des générateurs basés sur la théorie des nombres, c’est qu’ils
-produisent des suites périodiques, qui possèdent des propriétés qui rend la
+produisent des suites périodiques, qui possèdent des propriétés qui rendent la
 suite en partie prévisible, parce que les nombres générés sont dépendants de
 ceux qui les précèdent, ce qui ne se produit jamais dans une vraie suite
 aléatoire ! \par
@@ -317,8 +321,8 @@ générateurs basés sur la théorie des nombres. \par
 Le générateur de nombres pseudo-aléatoires présenté ci-dessous (Saito \&
 Yamaguchi \cite{SY}) utilise les deux théories pour produire des suites qui
 ressemblent à de vraies suites aléatoires non périodiques. Son coût
-computationnel est élevé, mais les suites générées peuvent par exemple servir
-de référence pour des tests qualitatifs.
+computationnel est élevé, mais les suites générées peuvent par exemple servir de
+référence pour des tests qualitatifs.
 
 \subsubsection{Point de départ: le décalage de Bernouilli}
 La relation $\alpha_{n+1}=(2\alpha_n)\ mod\ 1$ définit une suite où
@@ -550,7 +554,7 @@ générateur suivants:
 \begin{enumerate}
 \item Générateur avec la méthode des carrés mentionnée par Von Neumann
   (cf. section \ref{ss:carres}) avec une \textit{seed} de $36000000$
-  (suffisamment grand pour éviter 32 bits centraux égaux à 0 après la première
+  (suffisamment grande pour éviter 32 bits centraux égaux à 0 après la première
   étape).
 \item Générateur linéaire congruent modulo 7 avec $a=3$ et $c=0$, avec /seed/ $2021$.
 \item Générateur linéaire congruent avec les paramètres de RANDU (cf. section
